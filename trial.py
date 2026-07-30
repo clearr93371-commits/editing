@@ -231,18 +231,6 @@ def get_tier(total_pax):
     return 'large'
 
 # ── CELL 15 – generator ───────────────────────────────────────────────────────
-Fee_CHEFS = {'fee chefs'}
-Food_Cost_chefs = {'food cost chefs'}
-Food_Cost_bites_1 = {'food cost bites 1'}
-Food_Cost_bites_2 = {'food cost bites 2'}
-Food_Cost_bites_3 = {'food cost bites 3'}
-Sommelier = {'sommelier'}
-Fardas = {'fardas'}
-# Updated to match the normalized key produced by norm() function.
-Montagens_Desmontagens = {'montagens e desmontagens bares', 'montagens e desmontagens chefs'}
-Assistentes_Bares = {'assistentes bares executivo(01 dia antes, evento, 01 dia depois)'}
-Sexta = {'sexta almoço', 'sexta jantar'}
-Artistas = {'sexta almoço', 'sexta jantar', 'sábado almoço', 'sábado jantar', 'domingo almoço', 'domingo jantar'}
 
 def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, event_name,
                     extra_notes, templates, validated_ratios, event_meta):
@@ -289,10 +277,94 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
         tag_to_use = 'TEMPLATE_ESTIMATE'
         # Initialize with template's pretax cost, using to_num for safe calculations
         cost_total_pretax_to_use = to_num(it['cost_total_pretax'], 0)
+        
+        matched_ratio = next(
+            (r for k, r in validated_ratios.items() if k in key), None)
+        if matched_ratio is not None:
+            if event_type == 'fine_dining': 
+                row.update(unit_cost=matched_ratio, qty=total_pax_fd, days=1,
+                       cost_total_pretax=matched_ratio * total_pax_fd,
+                       tag='DATA_BACKED', note='')
+            elif event_type == 'Pop_Up':
+                row.update(unit_cost=matched_ratio, qty=total_pax_pu, days=1,
+                       cost_total_pretax=matched_ratio * total_pax_pu,
+                       tag='DATA_BACKED', note='')
+            else:
+                row.update(unit_cost=matched_ratio, qty=total_pax, days=1,
+                       cost_total_pretax=matched_ratio * total_pax,
+                       tag='DATA_BACKED', note='')
+        elif it['cost_total_pretax'] == 0:
+            row.update(unit_cost=0, qty=it['qty'], days=it['days'],
+                       cost_total_pretax=0,
+                       tag='NEEDS_INPUT' if base_type != event_type
+                           else 'TEMPLATE_ESTIMATE',
+                       note='')
+        else:
+            row.update(unit_cost=it['unit_cost'], qty=it['qty'],
+                       days=it['days'],
+                       cost_total_pretax=it['cost_total_pretax'],
+                       tag='TEMPLATE_ESTIMATE', note='')
+        generated.append(row)
 
+    
+    if event_type == 'fine_dining':
+        return {
+        'event_name':         event_name,
+        'event_type':         event_type,
+        'base_template_used': base_type,
+        'pax_per_day':        pax_per_day,
+        'days':               days,
+        'pax_per_slot':       pax_per_slot, 
+        'slots':              slots,
+        'total_pax':          total_pax_fd,
+        'tier':               tier_fd,
+        'notes':              extra_notes,
+        'line_items':         generated,
+        }
+    elif event_type == 'Pop_Up':
+        return {
+        'event_name':         event_name,
+        'event_type':         event_type,
+        'base_template_used': base_type,
+        'pax_per_day':        pax_per_day,
+        'days':               days,
+        'pax_per_slot':       pax_per_slot, 
+        'slots':              slots,
+        'total_pax':          total_pax_pu,
+        'tier':               tier_pu,
+        'notes':              extra_notes,
+        'line_items':         generated,
+        }
+    else:
+        return {
+        'event_name':         event_name,
+        'event_type':         event_type,
+        'base_template_used': base_type,
+        'pax_per_day':        pax_per_day,
+        'days':               days,
+        'pax_per_slot':       pax_per_slot, 
+        'slots':              slots,
+        'total_pax':          total_pax,
+        'tier':               tier,
+        'notes':              extra_notes,
+        'line_items':         generated,
+        }
+        
+#-------------------- insert equation - modification part - trial ---------------------------------
 
-        # Apply specific calculations for 'festival' event_type first
-        if event_type == 'festival':
+Fee_CHEFS = {'fee chefs'}
+Food_Cost_chefs = {'food cost chefs'}
+Food_Cost_bites_1 = {'food cost bites 1'}
+Food_Cost_bites_2 = {'food cost bites 2'}
+Food_Cost_bites_3 = {'food cost bites 3'}
+Sommelier = {'sommelier'}
+Fardas = {'fardas'}
+Montagens_Desmontagens = {'montagens e desmontagens bares', 'montagens e desmontagens chefs'}
+Assistentes_Bares = {'assistentes bares executivo(01 dia antes, evento, 01 dia depois)'}
+Sexta = {'sexta almoço', 'sexta jantar'}
+Artistas = {'sexta almoço', 'sexta jantar', 'sábado almoço', 'sábado jantar', 'domingo almoço', 'domingo jantar'}
+
+if event_type == 'festival':
             food_portion_per_day = pax_per_day * 5
 
             # Convert it['unit_cost'] to a number for internal calculations if it's used
@@ -427,79 +499,11 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                     tag_to_use = 'DATA_BACKED'
                     cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
 
-        
-        matched_ratio = next(
-            (r for k, r in validated_ratios.items() if k in key), None)
-        if matched_ratio is not None:
-            if event_type == 'fine_dining': 
-                row.update(unit_cost=matched_ratio, qty=total_pax_fd, days=1,
-                       cost_total_pretax=matched_ratio * total_pax_fd,
-                       tag='DATA_BACKED', note='')
-            elif event_type == 'Pop_Up':
-                row.update(unit_cost=matched_ratio, qty=total_pax_pu, days=1,
-                       cost_total_pretax=matched_ratio * total_pax_pu,
-                       tag='DATA_BACKED', note='')
-            else:
-                row.update(unit_cost=matched_ratio, qty=total_pax, days=1,
-                       cost_total_pretax=matched_ratio * total_pax,
-                       tag='DATA_BACKED', note='')
-        elif it['cost_total_pretax'] == 0:
-            row.update(unit_cost=0, qty=it['qty'], days=it['days'],
-                       cost_total_pretax=0,
-                       tag='NEEDS_INPUT' if base_type != event_type
-                           else 'TEMPLATE_ESTIMATE',
-                       note='')
-        else:
-            row.update(unit_cost=it['unit_cost'], qty=it['qty'],
-                       days=it['days'],
-                       cost_total_pretax=it['cost_total_pretax'],
-                       tag='TEMPLATE_ESTIMATE', note='')
-        generated.append(row)
 
-    
-    if event_type == 'fine_dining':
-        return {
-        'event_name':         event_name,
-        'event_type':         event_type,
-        'base_template_used': base_type,
-        'pax_per_day':        pax_per_day,
-        'days':               days,
-        'pax_per_slot':       pax_per_slot, 
-        'slots':              slots,
-        'total_pax':          total_pax_fd,
-        'tier':               tier_fd,
-        'notes':              extra_notes,
-        'line_items':         generated,
-        }
-    elif event_type == 'Pop_Up':
-        return {
-        'event_name':         event_name,
-        'event_type':         event_type,
-        'base_template_used': base_type,
-        'pax_per_day':        pax_per_day,
-        'days':               days,
-        'pax_per_slot':       pax_per_slot, 
-        'slots':              slots,
-        'total_pax':          total_pax_pu,
-        'tier':               tier_pu,
-        'notes':              extra_notes,
-        'line_items':         generated,
-        }
-    else:
-        return {
-        'event_name':         event_name,
-        'event_type':         event_type,
-        'base_template_used': base_type,
-        'pax_per_day':        pax_per_day,
-        'days':               days,
-        'pax_per_slot':       pax_per_slot, 
-        'slots':              slots,
-        'total_pax':          total_pax,
-        'tier':               tier,
-        'notes':              extra_notes,
-        'line_items':         generated,
-        }
-        
+
+
+
+
 
 # ── CELL 17 – Excel writer ────────────────────────────────────────────────────
 HEADER_FILL   = PatternFill('solid', fgColor='434343')
