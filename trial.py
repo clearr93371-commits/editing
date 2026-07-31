@@ -231,127 +231,6 @@ def get_tier(total_pax):
     return 'large'
 
 # ── CELL 15 – generator ───────────────────────────────────────────────────────
-
-def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, event_name,
-                    extra_notes, templates, validated_ratios, event_meta):
-    if event_type == 'fine_dining':
-        total_pax_fd = pax_per_slot * slots
-        tier_fd = get_tier(total_pax_fd)
-        base_type      = (event_type if event_type in templates
-                      else min(event_meta.values(),
-                               key=lambda m: abs(m['total_pax'] - total_pax_fd))['event_type'])
-    elif event_type == 'Pop_Up':
-        total_pax_pu = pax_per_slot * slots * days
-        tier_pu = get_tier(total_pax_pu)
-        base_type      = (event_type if event_type in templates
-                      else min(event_meta.values(),
-                               key=lambda m: abs(m['total_pax'] - total_pax_pu))['event_type'])
-    else:                   
-        total_pax      = pax_per_day * days
-        tier = get_tier(total_pax)
-        base_type      = (event_type if event_type in templates
-                      else min(event_meta.values(),
-                               key=lambda m: abs(m['total_pax'] - total_pax))['event_type'])
-    
-    base_items     = templates[base_type]
-    base_total_pax = next(m['total_pax'] for m in event_meta.values()
-                          if m['event_type'] == base_type)
-    generated = []
-                        
-    for it in base_items:
-        key = norm(it['description'])
-        row = {
-            'category':    it['category'],
-            'subcategory': it.get('subcategory'),
-            'description': it['description'],
-        }
-
-        if it['days'] is None or it['days'] == "" or it['days'] == 0:
-            it['days'] = ""  # Keep it empty
-        elif it['days'] > 1:
-            it['days'] = days
-
-        unit_cost_to_use = to_num(it['unit_cost'], 0)
-        qty_to_use = to_num(it['qty'], 1)
-        days_to_use = to_num(it['days'], 1)
-        tag_to_use = 'TEMPLATE_ESTIMATE'
-        # Initialize with template's pretax cost, using to_num for safe calculations
-        cost_total_pretax_to_use = to_num(it['cost_total_pretax'], 0)
-        
-        matched_ratio = next(
-            (r for k, r in validated_ratios.items() if k in key), None)
-        if matched_ratio is not None:
-            if event_type == 'fine_dining': 
-                row.update(unit_cost=matched_ratio, qty=total_pax_fd, days=1,
-                       cost_total_pretax=matched_ratio * total_pax_fd,
-                       tag='DATA_BACKED', note='')
-            elif event_type == 'Pop_Up':
-                row.update(unit_cost=matched_ratio, qty=total_pax_pu, days=1,
-                       cost_total_pretax=matched_ratio * total_pax_pu,
-                       tag='DATA_BACKED', note='')
-            else:
-                row.update(unit_cost=matched_ratio, qty=total_pax, days=1,
-                       cost_total_pretax=matched_ratio * total_pax,
-                       tag='DATA_BACKED', note='')
-        elif it['cost_total_pretax'] == 0:
-            row.update(unit_cost=0, qty=it['qty'], days=it['days'],
-                       cost_total_pretax=0,
-                       tag='NEEDS_INPUT' if base_type != event_type
-                           else 'TEMPLATE_ESTIMATE',
-                       note='')
-        else:
-            row.update(unit_cost=it['unit_cost'], qty=it['qty'],
-                       days=it['days'],
-                       cost_total_pretax=it['cost_total_pretax'],
-                       tag='TEMPLATE_ESTIMATE', note='')
-        generated.append(row)
-
-    
-    if event_type == 'fine_dining':
-        return {
-        'event_name':         event_name,
-        'event_type':         event_type,
-        'base_template_used': base_type,
-        'pax_per_day':        pax_per_day,
-        'days':               days,
-        'pax_per_slot':       pax_per_slot, 
-        'slots':              slots,
-        'total_pax':          total_pax_fd,
-        'tier':               tier_fd,
-        'notes':              extra_notes,
-        'line_items':         generated,
-        }
-    elif event_type == 'Pop_Up':
-        return {
-        'event_name':         event_name,
-        'event_type':         event_type,
-        'base_template_used': base_type,
-        'pax_per_day':        pax_per_day,
-        'days':               days,
-        'pax_per_slot':       pax_per_slot, 
-        'slots':              slots,
-        'total_pax':          total_pax_pu,
-        'tier':               tier_pu,
-        'notes':              extra_notes,
-        'line_items':         generated,
-        }
-    else:
-        return {
-        'event_name':         event_name,
-        'event_type':         event_type,
-        'base_template_used': base_type,
-        'pax_per_day':        pax_per_day,
-        'days':               days,
-        'pax_per_slot':       pax_per_slot, 
-        'slots':              slots,
-        'total_pax':          total_pax,
-        'tier':               tier,
-        'notes':              extra_notes,
-        'line_items':         generated,
-        }
-        
-#-------------------- insert equation - modification part - trial ---------------------------------
-
 Fee_CHEFS = {'fee chefs'}
 Food_Cost_chefs = {'food cost chefs'}
 Food_Cost_bites_1 = {'food cost bites 1'}
@@ -364,10 +243,12 @@ Assistentes_Bares = {'assistentes bares executivo(01 dia antes, evento, 01 dia d
 Sexta = {'sexta almoço', 'sexta jantar'}
 Artistas = {'sexta almoço', 'sexta jantar', 'sábado almoço', 'sábado jantar', 'domingo almoço', 'domingo jantar'}
 
-def equations(generated):
-    
-    
-    
+def equations(item, event_type, pax_per_day, days, pax_per_slot, slots, total_pax,
+    total_pax_fd, total_pax_pu, key, unit_cost_to_use, qty_to_use, days_to_use, cost_total_pretax_to_use
+):
+    tag_to_use = 'TEMPLATE_ESTIMATE'
+    numeric_it_unit_cost = to_num(item['unit_cost'], 0)
+
     if event_type == 'festival':
             food_portion_per_day = pax_per_day * 5
             # Convert it['unit_cost'] to a number for internal calculations if it's used
@@ -501,11 +382,129 @@ def equations(generated):
                     qty_to_use = qty_to_use
                     tag_to_use = 'DATA_BACKED'
                     cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
+         if tag_to_use == 'TEMPLATE_ESTIMATE': # Only if tag hasn't been set by specific event logic
+            matched_ratio = None
+            for ratio_key, ratio_val in VALIDATED_PER_PAX_RATIOS.items():
+                if ratio_key in key:
+                    matched_ratio = ratio_val
+                    break
+            
+                if matched_ratio is not None:
+                    unit_cost_to_use = matched_ratio
+                    qty_to_use = total_pax
+                    days_to_use = 1
+                    cost_total_pretax_to_use = matched_ratio * total_pax
+                    tag_to_use = 'DATA_BACKED'
+                elif to_num(item['cost_total_pretax'], 0) == 0: # Use to_num for comparison
+                    cost_total_pretax_to_use = 0
+                    tag_to_use = 'NEEDS_INPUT'
+                        # qty, days, unit_cost remain their initial values from 'item'
+                    # Else (if item['cost_total_pretax'] is not 0 and no matched_ratio and not specific festival logic),
+                    # default values from template (initialized earlier) are already correct.
+            
+            return unit_cost_to_use, qty_to_use, days_to_use, cost_total_pretax_to_use, tag_to_use
+             
+def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, event_name,
+                    extra_notes, templates, validated_ratios, event_meta):
+    if event_type == 'fine_dining':
+        total_pax_fd = pax_per_slot * slots
+        tier_fd = get_tier(total_pax_fd)
+        base_type      = (event_type if event_type in templates
+                      else min(event_meta.values(),
+                               key=lambda m: abs(m['total_pax'] - total_pax_fd))['event_type'])
+    elif event_type == 'Pop_Up':
+        total_pax_pu = pax_per_slot * slots * days
+        tier_pu = get_tier(total_pax_pu)
+        base_type      = (event_type if event_type in templates
+                      else min(event_meta.values(),
+                               key=lambda m: abs(m['total_pax'] - total_pax_pu))['event_type'])
+    else:                   
+        total_pax      = pax_per_day * days
+        tier = get_tier(total_pax)
+        base_type      = (event_type if event_type in templates
+                      else min(event_meta.values(),
+                               key=lambda m: abs(m['total_pax'] - total_pax))['event_type'])
+    
+    base_items     = templates[base_type]
+    base_total_pax = next(m['total_pax'] for m in event_meta.values()
+                          if m['event_type'] == base_type)
+    generated = []
+                        
+    for it in base_items:
+        key = norm(it['description'])
+        row = {
+            'category':    it['category'],
+            'subcategory': it.get('subcategory'),
+            'description': it['description'],
+        }
 
+        if it['days'] is None or it['days'] == "" or it['days'] == 0:
+            it['days'] = ""  # Keep it empty
+        elif it['days'] > 1:
+            it['days'] = days
 
+        unit_cost_to_use = to_num(it['unit_cost'], 0)
+        qty_to_use = to_num(it['qty'], 1)
+        days_to_use = to_num(it['days'], 1)
+        tag_to_use = 'TEMPLATE_ESTIMATE'
+        # Initialize with template's pretax cost, using to_num for safe calculations
+        cost_total_pretax_to_use = to_num(it['cost_total_pretax'], 0)
 
+        unit_cost_to_use, qty_to_use, days_to_use, cost_total_pretax_to_use, tag_to_use = calculate_item_cost(
+            it, event_type, pax_per_day, days, pax_per_slot, slots, total_pax,
+            total_pax_fd, total_pax_pu, key, unit_cost_to_use, qty_to_use, days_to_use, cost_total_pretax_to_use
+        )
 
+        row.update(unit_cost=unit_cost_to_use, qty=qty_to_use, days=days_to_use,
+                   cost_total_pretax=cost_total_pretax_to_use,
+                   tag=tag_to_use,
+                   note='')
+        generated.append(row)
 
+    
+    if event_type == 'fine_dining':
+        return {
+        'event_name':         event_name,
+        'event_type':         event_type,
+        'base_template_used': base_type,
+        'pax_per_day':        pax_per_day,
+        'days':               days,
+        'pax_per_slot':       pax_per_slot, 
+        'slots':              slots,
+        'total_pax':          total_pax_fd,
+        'tier':               tier_fd,
+        'notes':              extra_notes,
+        'line_items':         generated,
+        }
+    elif event_type == 'Pop_Up':
+        return {
+        'event_name':         event_name,
+        'event_type':         event_type,
+        'base_template_used': base_type,
+        'pax_per_day':        pax_per_day,
+        'days':               days,
+        'pax_per_slot':       pax_per_slot, 
+        'slots':              slots,
+        'total_pax':          total_pax_pu,
+        'tier':               tier_pu,
+        'notes':              extra_notes,
+        'line_items':         generated,
+        }
+    else:
+        return {
+        'event_name':         event_name,
+        'event_type':         event_type,
+        'base_template_used': base_type,
+        'pax_per_day':        pax_per_day,
+        'days':               days,
+        'pax_per_slot':       pax_per_slot, 
+        'slots':              slots,
+        'total_pax':          total_pax,
+        'tier':               tier,
+        'notes':              extra_notes,
+        'line_items':         generated,
+        }
+        
 
 
 # ── CELL 17 – Excel writer ────────────────────────────────────────────────────
@@ -525,7 +524,7 @@ TAG_LABEL = {'DATA_BACKED': '', 'TEMPLATE_ESTIMATE': '', 'NEEDS_INPUT': ''}
 month_cal = ['JAN', 'FEV', 'MARCO','ABRIL', 'MAIO', 'JUNHO', 'JULHO',
 'AGO', 'SET', 'OUT', 'NOV', 'DEZ']
 
-reduced_13 = {'Food Cost chefs', 'Food Cost bites', 'FOOD COST CHEFS'}
+reduced_13 = {'Food Cost chefs', 'Food Cost bites', 'FOOD COST CHEFS'} #EDIT FOR FOOD BITES
 reduced_6 = {'Copos'}
 extra = {'PALCOS INTERNACIONAIS'}
 
