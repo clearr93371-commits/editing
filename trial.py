@@ -433,12 +433,12 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                        tag='NEEDS_INPUT' if base_type != event_type
                             else 'TEMPLATE_ESTIMATE',
                        note='')
-        
-        row.update(unit_cost=it['unit_cost'], qty=it['qty'],
+        elif: 
+            row.update(unit_cost=it['unit_cost'], qty=it['qty'],
                        days=it['days'],
                        cost_total_pretax=it['cost_total_pretax'],
                        tag='TEMPLATE_ESTIMATE', note='')
-        generated.append(row)
+            generated.append(row)
 
     
     if event_type == 'fine_dining':
