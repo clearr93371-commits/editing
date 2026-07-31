@@ -364,9 +364,12 @@ Assistentes_Bares = {'assistentes bares executivo(01 dia antes, evento, 01 dia d
 Sexta = {'sexta almoço', 'sexta jantar'}
 Artistas = {'sexta almoço', 'sexta jantar', 'sábado almoço', 'sábado jantar', 'domingo almoço', 'domingo jantar'}
 
-if event_type == 'festival':
+def equations(generated):
+    
+    
+    
+    if event_type == 'festival':
             food_portion_per_day = pax_per_day * 5
-
             # Convert it['unit_cost'] to a number for internal calculations if it's used
             numeric_it_unit_cost = to_num(it['unit_cost'], 0)
 
@@ -853,21 +856,6 @@ EVENT_TYPE_KEYWORDS = {
     'corporate_dinner': ['corporate dinner','dinner event','Jantar Corp', 'Jantar' ],
     'fine_dining': ['fine dining', 'Fine Dining']
 }
-
-# Fee_CHEFS = {'fee chefs'}
-# Food_Cost_chefs = {'food cost chefs'}
-# Food_Cost_bites_1 = {'food cost bites 1'}
-# Food_Cost_bites_2 = {'food cost bites 2'}
-# Food_Cost_bites_3 = {'food cost bites 3'}
-# Sommelier = {'sommelier'}
-# Fardas = {'fardas'}
-# # Updated to match the normalized key produced by norm() function.
-# Montagens_Desmontagens = {'montagens e desmontagens bares', 'montagens e desmontagens chefs'}
-# Assistentes_Bares = {'assistentes bares executivo(01 dia antes, evento, 01 dia depois)'}
-# Sexta = {'sexta almoço', 'sexta jantar'}
-# Artistas = {'sexta almoço', 'sexta jantar', 'sábado almoço', 'sábado jantar', 'domingo almoço', 'domingo jantar'}
-
-
 
 def extract_params(text):
     tl = text.lower()
