@@ -223,7 +223,7 @@ def build_validated_ratios(all_items):
             validated[desc] = ratio_val
     return validated
 
-
+validated_t = validated
 # ── CELL 13 – templates ───────────────────────────────────────────────────────
 def get_tier(total_pax):
     if total_pax < 800:   return 'small'
@@ -386,7 +386,7 @@ def equations(item, event_type, pax_per_day, days, pax_per_slot, slots, total_pa
         
     if tag_to_use == 'TEMPLATE_ESTIMATE': # Only if tag hasn't been set by specific event logic
         matched_ratio = None
-        for ratio_key, ratio_val in validated.items():
+        for ratio_key, ratio_val in validated_t.items():
             if ratio_key in key:
                 matched_ratio = ratio_val
                 break
