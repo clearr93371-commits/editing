@@ -381,11 +381,13 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
             elif key in Sommelier: #need validation
                 unit_cost_to_use = unit_cost_to_use
                 qty_to_use = slots
+                tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = unit_cost_to_use * qty_to_use
 
             elif key in Fardas:
                 unit_cost_to_use = unit_cost_to_use
                 qty_to_use = no_of_chef
+                tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = unit_cost_to_use * qty_to_use
 
         if event_type == 'Pop_Up':
@@ -430,6 +432,12 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
         
         matched_ratio = next(
             (r for k, r in validated_ratios.items() if k in key), None)
+        if tag_to_use == 'DATA_BACKED':
+            row.update(unit_cost=unit_cost_to_use, qty=qty_to_use,
+                       days=days_to_use,
+                       cost_total_pretax=cost_total_pretax_to_use,
+                       tag='DATA_BACKED', note='')
+            
         if matched_ratio is not None:
             if event_type == 'fine_dining': 
                 row.update(unit_cost=matched_ratio, qty=total_pax_fd, days=1,
