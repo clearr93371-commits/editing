@@ -417,25 +417,24 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                     tag_to_use = 'DATA_BACKED'
                     cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
 
-        
-        matched_ratio = next(
-            (r for k, r in validated_ratios.items() if k in key), None)
+        if tag_to_use == 'TEMPLATE_ESTIMATE': 
+            matched_ratio = next((r for k, r in validated_ratios.items() if k in key), None)
+            break
         #'template estimate'
-        
-        if matched_ratio is not None and tag_to_use == 'DATA_BACKED':
-            row.update(unit_cost=numeric_it_unit_cost, qty=qty_to_use,
+            if matched_ratio is not None:
+                row.update(unit_cost=numeric_it_unit_cost, qty=qty_to_use,
                        days=days_to_use,
                        cost_total_pretax=cost_total_pretax_to_use,
                        tag='DATA_BACKED', note='')
             
-        elif it['cost_total_pretax'] == 0:
+            elif to_num(it['cost_total_pretax'], 0) == 0:
             row.update(unit_cost=0, qty=it['qty'], days=it['days'],
                        cost_total_pretax=0,
                        tag='NEEDS_INPUT' if base_type != event_type
-                           else 'TEMPLATE_ESTIMATE',
+                            else 'TEMPLATE_ESTIMATE',
                        note='')
-        else:
-            row.update(unit_cost=it['unit_cost'], qty=it['qty'],
+        
+        row.update(unit_cost=it['unit_cost'], qty=it['qty'],
                        days=it['days'],
                        cost_total_pretax=it['cost_total_pretax'],
                        tag='TEMPLATE_ESTIMATE', note='')
