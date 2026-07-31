@@ -334,15 +334,15 @@ def equations(item, event_type, pax_per_day, days, pax_per_slot, slots, total_pa
             tag_to_use = 'DATA_BACKED'
             cost_total_pretax_to_use = unit_cost_to_use * qty_to_use
 
-            elif key in Sommelier: #need validation
-                unit_cost_to_use = unit_cost_to_use
-                qty_to_use = slots
-                cost_total_pretax_to_use = unit_cost_to_use * qty_to_use
+        elif key in Sommelier: #need validation
+            unit_cost_to_use = unit_cost_to_use
+            qty_to_use = slots
+            cost_total_pretax_to_use = unit_cost_to_use * qty_to_use
 
-            elif key in Fardas:
-                unit_cost_to_use = unit_cost_to_use
-                qty_to_use = no_of_chef
-                cost_total_pretax_to_use = unit_cost_to_use * qty_to_use
+        elif key in Fardas:
+            unit_cost_to_use = unit_cost_to_use
+            qty_to_use = no_of_chef
+            cost_total_pretax_to_use = unit_cost_to_use * qty_to_use
 
     if event_type == 'Pop_Up':
         numeric_it_unit_cost = to_num(it['unit_cost'], 0)
