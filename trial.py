@@ -433,7 +433,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                        tag='NEEDS_INPUT' if base_type != event_type
                             else 'TEMPLATE_ESTIMATE',
                        note='')
-        elif: 
+        else: 
             row.update(unit_cost=it['unit_cost'], qty=it['qty'],
                        days=it['days'],
                        cost_total_pretax=it['cost_total_pretax'],
