@@ -320,13 +320,15 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                     no_chef_a = round(no_of_restaurant_per_day / 18 * 9)
                     qty_to_use = 600 * no_chef_a
                     days_to_use = days
-                    tag_to_use = 'DATA_BACKED'
+                    tag_to_use = 'DATA_BACKED
+                    cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use 
 
                 elif key in Food_Cost_bites_2:
                     no_chef_b = round(no_of_restaurant_per_day / 18 * 4)
                     qty_to_use = 600 * no_chef_b
                     days_to_use = days
                     tag_to_use = 'DATA_BACKED'
+                    cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use 
 
                 elif key in Food_Cost_bites_3:
                     no_chef_c = round(no_of_restaurant_per_day / 18 * 5)
@@ -369,26 +371,25 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
               days_to_use = 1 # Fixed fee, not daily
               # unit_cost_to_use already holds numeric_it_unit_cost
               tag_to_use = 'DATA_BACKED'
-              cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
+              cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
             elif key in Food_Cost_chefs:
+                numeric_it_unit_cost = 80 # Explicitly set the unit cost
                 qty_to_use = total_pax_fd
                 days_to_use = 1 # Total pax, not per day
-                unit_cost_to_use = 80 # Explicitly set the unit cost
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = unit_cost_to_use * qty_to_use
-
-            elif key in Sommelier: #need validation
-                unit_cost_to_use = unit_cost_to_use
+                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+                
+            elif key in Sommelier:
                 qty_to_use = slots
+                days_to_use = 1 
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = unit_cost_to_use * qty_to_use
+                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use 
 
             elif key in Fardas:
-                unit_cost_to_use = unit_cost_to_use
                 qty_to_use = no_of_chef
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = unit_cost_to_use * qty_to_use
+                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use 
 
         if event_type == 'Pop_Up':
             numeric_it_unit_cost = to_num(it['unit_cost'], 0)
@@ -406,15 +407,12 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
             elif key in Montagens_Desmontagens:
-                qty_to_use = qty_to_use
                 days_to_use = 2
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
                 
             elif key in Assistentes_Bares:
-                qty_to_use = qty_to_use
-                dias = days
-                days_to_use = dias + 2
+                days_to_use = days + 2
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
     
@@ -422,7 +420,6 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 if days < 2: 
                     for i in Sexta: 
                         numeric_it_unit_cost = 0
-                        qty_to_use = qty_to_use
                         tag_to_use = 'DATA_BACKED'
                         cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
                 else:
@@ -434,11 +431,14 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
         
         matched_ratio = next(
             (r for k, r in validated_ratios.items() if k in key), None)
-        if matched_ratio is not None:
-            row.update(unit_cost=unit_cost_to_use, qty=qty_to_use,
+        #'template estimate'
+        
+        if matched_ratio is not None and tag_to_use == 'DATA_BACKED':
+            row.update(unit_cost=numeric_it_unit_cost, qty=qty_to_use,
                        days=days_to_use,
                        cost_total_pretax=cost_total_pretax_to_use,
                        tag='DATA_BACKED', note='')
+            
         elif it['cost_total_pretax'] == 0:
             row.update(unit_cost=0, qty=it['qty'], days=it['days'],
                        cost_total_pretax=0,
