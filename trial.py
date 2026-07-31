@@ -223,7 +223,7 @@ def build_validated_ratios(all_items):
             validated[desc] = ratio_val
     return validated
 
-validated_t = validated
+    validated_t = validated
 # ── CELL 13 – templates ───────────────────────────────────────────────────────
 def get_tier(total_pax):
     if total_pax < 800:   return 'small'
