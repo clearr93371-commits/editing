@@ -386,7 +386,7 @@ def equations(item, event_type, pax_per_day, days, pax_per_slot, slots, total_pa
         
     if tag_to_use == 'TEMPLATE_ESTIMATE': # Only if tag hasn't been set by specific event logic
         matched_ratio = None
-        for ratio_key, ratio_val in VALIDATED_PER_PAX_RATIOS.items():
+        for ratio_key, ratio_val in validated.items():
             if ratio_key in key:
                 matched_ratio = ratio_val
                 break
