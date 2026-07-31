@@ -408,12 +408,14 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
             elif key in Montagens_Desmontagens:
                 qty_to_use = qty_to_use
                 days_to_use = 2
+                tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
                 
             elif key in Assistentes_Bares:
                 qty_to_use = qty_to_use
                 dias = days
                 days_to_use = dias + 2
+                tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
     
             elif key in Artistas:
@@ -432,24 +434,10 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
         
         matched_ratio = next(
             (r for k, r in validated_ratios.items() if k in key), None)
-        if tag_to_use == 'DATA_BACKED':
+        if matched_ratio is not None:
             row.update(unit_cost=unit_cost_to_use, qty=qty_to_use,
                        days=days_to_use,
                        cost_total_pretax=cost_total_pretax_to_use,
-                       tag='DATA_BACKED', note='')
-            
-        if matched_ratio is not None:
-            if event_type == 'fine_dining': 
-                row.update(unit_cost=matched_ratio, qty=total_pax_fd, days=1,
-                       cost_total_pretax=matched_ratio * total_pax_fd,
-                       tag='DATA_BACKED', note='')
-            elif event_type == 'Pop_Up':
-                row.update(unit_cost=matched_ratio, qty=total_pax_pu, days=1,
-                       cost_total_pretax=matched_ratio * total_pax_pu,
-                       tag='DATA_BACKED', note='')
-            else:
-                row.update(unit_cost=matched_ratio, qty=total_pax, days=1,
-                       cost_total_pretax=matched_ratio * total_pax,
                        tag='DATA_BACKED', note='')
         elif it['cost_total_pretax'] == 0:
             row.update(unit_cost=0, qty=it['qty'], days=it['days'],
