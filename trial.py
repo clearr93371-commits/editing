@@ -320,7 +320,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                     no_chef_a = round(no_of_restaurant_per_day / 18 * 9)
                     qty_to_use = 600 * no_chef_a
                     days_to_use = days
-                    tag_to_use = 'DATA_BACKED
+                    tag_to_use = 'DATA_BACKED'
                     cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use 
 
                 elif key in Food_Cost_bites_2:
