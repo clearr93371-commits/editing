@@ -231,17 +231,6 @@ def get_tier(total_pax):
     return 'large'
 
 # ── CELL 15 – generator ───────────────────────────────────────────────────────
-Fee_CHEFS = {'fee chefs'}
-Food_Cost_chefs = {'food cost chefs'}
-Food_Cost_bites_1 = {'food cost bites 1'}
-Food_Cost_bites_2 = {'food cost bites 2'}
-Food_Cost_bites_3 = {'food cost bites 3'}
-Sommelier = {'sommelier'}
-Fardas = {'fardas'}
-Montagens_Desmontagens = {'montagens e desmontagens bares', 'montagens e desmontagens chefs'}
-Assistentes_Bares = {'assistentes bares executivo(01 dia antes, evento, 01 dia depois)'}
-Sexta = {'sexta almoço', 'sexta jantar'}
-Artistas = {'sexta almoço', 'sexta jantar', 'sábado almoço', 'sábado jantar', 'domingo almoço', 'domingo jantar'}
 
 def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, event_name,
                     extra_notes, templates, validated_ratios, event_meta):
@@ -846,6 +835,18 @@ EVENT_TYPE_KEYWORDS = {
     'corporate_dinner': ['corporate dinner','dinner event','Jantar Corp', 'Jantar' ],
     'fine_dining': ['fine dining', 'Fine Dining']
 }
+
+Fee_CHEFS = {'fee chefs'}
+Food_Cost_chefs = {'food cost chefs'}
+Food_Cost_bites_1 = {'food cost bites 1'}
+Food_Cost_bites_2 = {'food cost bites 2'}
+Food_Cost_bites_3 = {'food cost bites 3'}
+Sommelier = {'sommelier'}
+Fardas = {'fardas'}
+Montagens_Desmontagens = {'montagens e desmontagens bares', 'montagens e desmontagens chefs'}
+Assistentes_Bares = {'assistentes bares executivo(01 dia antes, evento, 01 dia depois)'}
+Sexta = {'sexta almoço', 'sexta jantar'}
+Artistas = {'sexta almoço', 'sexta jantar', 'sábado almoço', 'sábado jantar', 'domingo almoço', 'domingo jantar'}
 
 def extract_params(text):
     tl = text.lower()
