@@ -408,20 +408,21 @@ def equations(item, event_type, pax_per_day, days, pax_per_slot, slots, total_pa
              
 def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, event_name,
                     extra_notes, templates, validated_ratios, event_meta):
+    total_pax = pax_per_day * days
+    total_pax_fd = pax_per_slot * slots
+    total_pax_pu = pax_per_slot * slots * days
+                        
     if event_type == 'fine_dining':
-        total_pax_fd = pax_per_slot * slots
         tier_fd = get_tier(total_pax_fd)
         base_type      = (event_type if event_type in templates
                       else min(event_meta.values(),
                                key=lambda m: abs(m['total_pax'] - total_pax_fd))['event_type'])
     elif event_type == 'Pop_Up':
-        total_pax_pu = pax_per_slot * slots * days
         tier_pu = get_tier(total_pax_pu)
         base_type      = (event_type if event_type in templates
                       else min(event_meta.values(),
                                key=lambda m: abs(m['total_pax'] - total_pax_pu))['event_type'])
     else:                   
-        total_pax      = pax_per_day * days
         tier = get_tier(total_pax)
         base_type      = (event_type if event_type in templates
                       else min(event_meta.values(),
