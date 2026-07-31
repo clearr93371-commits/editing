@@ -452,7 +452,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
         # Initialize with template's pretax cost, using to_num for safe calculations
         cost_total_pretax_to_use = to_num(it['cost_total_pretax'], 0)
 
-        unit_cost_to_use, qty_to_use, days_to_use, cost_total_pretax_to_use, tag_to_use = calculate_item_cost(
+        unit_cost_to_use, qty_to_use, days_to_use, cost_total_pretax_to_use, tag_to_use = equations(
             it, event_type, pax_per_day, days, pax_per_slot, slots, total_pax,
             total_pax_fd, total_pax_pu, key, unit_cost_to_use, qty_to_use, days_to_use, cost_total_pretax_to_use
         )
