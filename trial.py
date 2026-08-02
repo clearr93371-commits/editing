@@ -231,6 +231,17 @@ def get_tier(total_pax):
     return 'large'
 
 # ── CELL 15 – generator ───────────────────────────────────────────────────────
+Fee_CHEFS = {'fee chefs'}
+Food_Cost_chefs = {'food cost chefs'}
+Food_Cost_bites_1 = {'food cost bites 1'}
+Food_Cost_bites_2 = {'food cost bites 2'}
+Food_Cost_bites_3 = {'food cost bites 3'}
+Sommelier = {'sommelier'}
+Fardas = {'fardas'}
+Montagens_Desmontagens = {'montagens e desmontagens bares', 'montagens e desmontagens chefs'}
+Assistentes_Bares = {'assistentes bares executivo(01 dia antes, evento, 01 dia depois)'}
+Sexta = {'sexta almoço', 'sexta jantar'}
+Artistas = {'sexta almoço', 'sexta jantar', 'sábado almoço', 'sábado jantar', 'domingo almoço', 'domingo jantar'}
 
 def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, event_name,
                     extra_notes, templates, validated_ratios, event_meta):
@@ -406,15 +417,14 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
     
-            elif key in Artistas:
+            elif key in Artistas: #IN colab also unable to detect 
                 if days < 2: 
                     for i in Sexta: 
-                        numeric_it_unit_cost = 0
+                        days_to_use = 0 
                         tag_to_use = 'DATA_BACKED'
-                        cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
+                        cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
                 else:
                     numeric_it_unit_cost = band_fee_est
-                    qty_to_use = qty_to_use
                     tag_to_use = 'DATA_BACKED'
                     cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
 
@@ -422,10 +432,21 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
             matched_ratio = next((r for k, r in validated_ratios.items() if k in key), None)
 
             if matched_ratio is not None:
-                unit_cost_to_use = matched_ratio
-                qty_to_use = total_pax
-                days_to_use = 1
-                cost_total_pretax_to_use = matched_ratio * total_pax
+                if event_type == 'fine_dining':
+                    unit_cost_to_use = matched_ratio
+                    qty_to_use = total_pax_fd
+                    days_to_use = 1
+                    cost_total_pretax_to_use = matched_ratio * total_pax_fd
+                elif event_type == 'Pop_Up':
+                    unit_cost_to_use = matched_ratio
+                    qty_to_use = total_pax_pu
+                    days_to_use = 1
+                    cost_total_pretax_to_use = matched_ratio * total_pax_pu
+                else: 
+                    unit_cost_to_use = matched_ratio
+                    qty_to_use = total_pax
+                    days_to_use = 1
+                    cost_total_pretax_to_use = matched_ratio * total_pax
                 tag_to_use = 'DATA_BACKED'
                 
             elif to_num(it['cost_total_pretax'], 0) == 0: # Use to_num for comparison
@@ -831,18 +852,6 @@ EVENT_TYPE_KEYWORDS = {
     'corporate_dinner': ['corporate dinner','dinner event','Jantar Corp', 'Jantar' ],
     'fine_dining': ['fine dining', 'Fine Dining']
 }
-
-Fee_CHEFS = {'fee chefs'}
-Food_Cost_chefs = {'food cost chefs'}
-Food_Cost_bites_1 = {'food cost bites 1'}
-Food_Cost_bites_2 = {'food cost bites 2'}
-Food_Cost_bites_3 = {'food cost bites 3'}
-Sommelier = {'sommelier'}
-Fardas = {'fardas'}
-Montagens_Desmontagens = {'montagens e desmontagens bares', 'montagens e desmontagens chefs'}
-Assistentes_Bares = {'assistentes bares executivo(01 dia antes, evento, 01 dia depois)'}
-Sexta = {'sexta almoço', 'sexta jantar'}
-Artistas = {'sexta almoço', 'sexta jantar', 'sábado almoço', 'sábado jantar', 'domingo almoço', 'domingo jantar'}
 
 def extract_params(text):
     tl = text.lower()
