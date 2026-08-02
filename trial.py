@@ -272,12 +272,13 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
         elif it['days'] > 1:
             it['days'] = days
 
+        #copy from template 
         unit_cost_to_use = to_num(it['unit_cost'], 0)
         qty_to_use = to_num(it['qty'], 1)
         days_to_use = to_num(it['days'], 1)
         tag_to_use = 'TEMPLATE_ESTIMATE'
-        # Initialize with template's pretax cost, using to_num for safe calculations
         cost_total_pretax_to_use = to_num(it['cost_total_pretax'], 0)
+        #to_num(value, default)
 
 
         # Apply specific calculations for 'festival' event_type first
@@ -417,29 +418,25 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                     tag_to_use = 'DATA_BACKED'
                     cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
 
-        if tag_to_use == 'TEMPLATE_ESTIMATE': 
+        if tag_to_use == 'TEMPLATE_ESTIMATE':
             matched_ratio = next((r for k, r in validated_ratios.items() if k in key), None)
-            break
-        #'template estimate'
-            if matched_ratio is not None:
-                row.update(unit_cost=numeric_it_unit_cost, qty=qty_to_use,
-                       days=days_to_use,
-                       cost_total_pretax=cost_total_pretax_to_use,
-                       tag='DATA_BACKED', note='')
-            
-            elif to_num(it['cost_total_pretax'], 0) == 0:
-                row.update(unit_cost=0, qty=it['qty'], days=it['days'],
-                       cost_total_pretax=0,
-                       tag='NEEDS_INPUT' if base_type != event_type
-                            else 'TEMPLATE_ESTIMATE',
-                       note='')
-        else: 
-            row.update(unit_cost=it['unit_cost'], qty=it['qty'],
-                       days=it['days'],
-                       cost_total_pretax=it['cost_total_pretax'],
-                       tag='TEMPLATE_ESTIMATE', note='')
-            generated.append(row)
 
+            if matched_ratio is not None:
+                unit_cost_to_use = matched_ratio
+                qty_to_use = total_pax
+                days_to_use = 1
+                cost_total_pretax_to_use = matched_ratio * total_pax
+                tag_to_use = 'DATA_BACKED'
+                
+            elif to_num(it['cost_total_pretax'], 0) == 0: # Use to_num for comparison
+                cost_total_pretax_to_use = 0
+                tag_to_use = 'NEEDS_INPUT' 
+
+            row.update(unit_cost=unit_cost_to_use, qty=qty_to_use, days=days_to_use,
+                   cost_total_pretax=cost_total_pretax_to_use,
+                   tag=tag_to_use,
+                   note='')
+            generated.append(row)
     
     if event_type == 'fine_dining':
         return {
