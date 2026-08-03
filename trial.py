@@ -313,8 +313,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
-            elif any(k in key for k in Food_Cost_bites_1) or any(k in key for k in Food_Cost_bites_2)
-                or any(k in key for k in Food_Cost_bites_3):
+            elif any(k in key for k in Food_Cost_bites_1) or any(k in key for k in Food_Cost_bites_2) or any(k in key for k in Food_Cost_bites_3):
                 food_bites_portion = 2 * pax_per_day
                 no_of_restaurant_per_day = math.ceil(food_bites_portion / 600) + 2
 
