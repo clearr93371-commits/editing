@@ -405,7 +405,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
             elif any (k in key for k in Food_Cost_chefs):
-                qty_to_use = total_pax_pu * 4
+                qty_to_use = pax_per_slot * slots * 4
                 days_to_use = days
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
@@ -422,17 +422,16 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
     
             elif any(k in key for k in Artistas):#IN colab also unable to detect 
-                if days < 2: 
-                    for i in Sexta: 
+                numeric_it_unit_cost = band_fee_est
+                qty_to_use = qty_to_use
+                tag_to_use = 'DATA_BACKED'
+                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
+                if any(k in key for k in Sexta): 
+                    if day <= 2: 
                         numeric_it_unit_cost = 0 
                         qty_to_use = qty_to_use
                         tag_to_use = 'DATA_BACKED'
                         cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
-                else:
-                    numeric_it_unit_cost = band_fee_est
-                    qty_to_use = qty_to_use
-                    tag_to_use = 'DATA_BACKED'
-                    cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
         
         row.update(unit_cost=unit_cost_to_use, qty=qty_to_use, days=days_to_use,
                    cost_total_pretax=cost_total_pretax_to_use,
