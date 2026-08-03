@@ -232,7 +232,7 @@ def get_tier(total_pax):
 
 # ── CELL 15 – generator ───────────────────────────────────────────────────────
 Fee_CHEFS = {'fee chefs'}
-Food_Cost_chefs = {'food cost chefs'}
+Food_Cost_chefs = {'food cost chefs', 'FOOD COST CHEFS'}
 Food_Cost_bites_1 = {'food cost bites 1'}
 Food_Cost_bites_2 = {'food cost bites 2'}
 Food_Cost_bites_3 = {'food cost bites 3'}
