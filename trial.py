@@ -299,7 +299,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
             # Convert it['unit_cost'] to a number for internal calculations if it's used
             numeric_it_unit_cost = to_num(it['unit_cost'], 0)
 
-            if key in Fee_CHEFS:
+            if any(k in key for k in Fee_CHEFS):
                 n = math.floor(food_portion_per_day / 239)
                 no_of_chef_per_day = math.floor((90 * n) / 1500) + math.floor((60 * n) / 1200) + math.floor((24 * n) / 800) + math.floor((20 * n) / 1000) + math.floor((n * 45) / 1500)
                 qty_to_use = no_of_chef_per_day
@@ -307,31 +307,32 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
-            elif key in Food_Cost_chefs:
+            elif any(k in key for k in Food_Cost_chefs):
                 qty_to_use = food_portion_per_day
                 days_to_use = days
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
-            elif key in Food_Cost_bites_1 or key in Food_Cost_bites_2 or key in Food_Cost_bites_3:
+            elif any(k in key for k in Food_Cost_bites_1) or any(k in key for k in Food_Cost_bites_2)
+                or any(k in key for k in Food_Cost_bites_3):
                 food_bites_portion = 2 * pax_per_day
                 no_of_restaurant_per_day = math.ceil(food_bites_portion / 600) + 2
 
-                if key in Food_Cost_bites_1:
+                if any(k in key for k in Food_Cost_bites_1):
                     no_chef_a = round(no_of_restaurant_per_day / 18 * 9)
                     qty_to_use = 600 * no_chef_a
                     days_to_use = days
                     tag_to_use = 'DATA_BACKED'
                     cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use 
 
-                elif key in Food_Cost_bites_2:
+                elif any(k in key for k in Food_Cost_bites_2):
                     no_chef_b = round(no_of_restaurant_per_day / 18 * 4)
                     qty_to_use = 600 * no_chef_b
                     days_to_use = days
                     tag_to_use = 'DATA_BACKED'
                     cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use 
 
-                elif key in Food_Cost_bites_3:
+                elif any(k in key for k in Food_Cost_bites_3):
                     no_chef_c = round(no_of_restaurant_per_day / 18 * 5)
                     qty_to_use = 600 * no_chef_c
                     days_to_use = days
@@ -341,7 +342,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
         if event_type == 'corporate_lunch':
             food_portion = 4 * pax_per_day
             numeric_it_unit_cost = to_num(it['unit_cost'], 0)
-            if key in Food_Cost_chefs:
+            if any(k in key for k in Food_Cost_chefs):
                 qty_to_use = food_portion
                 days_to_use = days
                 tag_to_use = 'DATA_BACKED'
@@ -351,13 +352,13 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
         if event_type == 'corporate_dinner':
             food_portion = 9 * pax_per_day
             numeric_it_unit_cost = to_num(it['unit_cost'], 0)
-            if key in Fee_CHEFS:
+            if any(k in key for k in Fee_CHEFS):
               qty_to_use = 10
               days_to_use = days
               tag_to_use = 'DATA_BACKED'
               cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
-            elif key in Food_Cost_chefs:
+            elif any(k in key for k in Food_Cost_chefs):
               qty_to_use = food_portion
               days_to_use = days
               tag_to_use = 'DATA_BACKED'
@@ -366,7 +367,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
         if event_type == 'fine_dining': # Changed to 'fine_dining' to match event_type in EVENT_META
             numeric_it_unit_cost = to_num(it['unit_cost'], 0)
             no_of_chef = 6
-            if key in Fee_CHEFS:
+            if any(k in key for k in Fee_CHEFS):
               # Fixed typo: 'desciption' to 'description', 'Fee_Chefs' to 'Fee_CHEFS'
               qty_to_use = no_of_chef
               days_to_use = 1 # Fixed fee, not daily
@@ -374,20 +375,20 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
               tag_to_use = 'DATA_BACKED'
               cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
-            elif key in Food_Cost_chefs:
+            elif any(k in key for k in Food_Cost_chefs):
                 numeric_it_unit_cost = 80 # Explicitly set the unit cost
                 qty_to_use = total_pax_fd
                 days_to_use = 1 # Total pax, not per day
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
                 
-            elif key in Sommelier:
+            elif any(k in key for k in Sommelier):
                 qty_to_use = slots
                 days_to_use = 1 
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use 
 
-            elif key in Fardas:
+            elif any(k in key for k in Fardas):
                 qty_to_use = no_of_chef
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use 
@@ -395,29 +396,29 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
         if event_type == 'Pop_Up':
             numeric_it_unit_cost = to_num(it['unit_cost'], 0)
             band_fee_est = 3500
-            if key in Fee_CHEFS:
+            if any(k in key for k in Fee_CHEFS):
                 qty_to_use = 4
                 days_to_use = days
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
-            elif key in Food_Cost_chefs:
+            elif any (k in key for k in Food_Cost_chefs):
                 qty_to_use = total_pax_pu * 4
                 days_to_use = days
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
-            elif key in Montagens_Desmontagens:
+            elif any(k in key for k in Montagens_Desmontagens):
                 days_to_use = 2
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
                 
-            elif key in Assistentes_Bares:
+            elif any(k in key for k in Assistentes_Bares):
                 days_to_use = days + 2
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
     
-            elif key in Artistas: #IN colab also unable to detect 
+            elif any(k in key for k in Artistas): #IN colab also unable to detect 
                 if days < 2: 
                     for i in Sexta: 
                         days_to_use = 0 
@@ -429,7 +430,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                     cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
 
         if tag_to_use == 'TEMPLATE_ESTIMATE':
-            matched_ratio = next((r for k, r in validated_ratios.items() if k in key), None)
+            matched_ratio = next((rv for rk, rv in validated_ratios.items() if rk in key), None)
 
             if matched_ratio is not None:
                 if event_type == 'fine_dining':
@@ -451,9 +452,10 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 
             elif to_num(it['cost_total_pretax'], 0) == 0: # Use to_num for comparison
                 cost_total_pretax_to_use = 0
-                tag_to_use = 'NEEDS_INPUT' 
+                tag_to_use = ('NEEDS_INPUT' if base_type != event_type
+                              else 'TEMPLATE_ESTIMATE')
 
-            row.update(unit_cost=unit_cost_to_use, qty=qty_to_use, days=days_to_use,
+            row.update(unit_cost=unit_cost_to_use, qty=qty_to_use, days=it['days'],
                    cost_total_pretax=cost_total_pretax_to_use,
                    tag=tag_to_use,
                    note='')
