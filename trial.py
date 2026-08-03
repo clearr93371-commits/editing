@@ -291,7 +291,10 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
         cost_total_pretax_to_use = to_num(it['cost_total_pretax'], 0)
         #to_num(value, default)
 
-
+        row.update(unit_cost=unit_cost_to_use, qty=qty_to_use, days=days_to_use,
+                   cost_total_pretax=cost_total_pretax_to_use,
+                   tag='TEMPLATE_ESTIMATE',
+                   note='')
         # Apply specific calculations for 'festival' event_type first
         if event_type == 'festival':
             food_portion_per_day = pax_per_day * 5
@@ -375,7 +378,8 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
               cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
             elif any(k in key for k in Food_Cost_chefs):
-                numeric_it_unit_cost = 80 # Explicitly set the unit cost
+                unit_cost = 80
+                numeric_it_unit_cost = unit_cost
                 qty_to_use = total_pax_fd
                 days_to_use = 1 # Total pax, not per day
                 tag_to_use = 'DATA_BACKED'
@@ -383,7 +387,6 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 
             elif any(k in key for k in Sommelier):
                 qty_to_use = slots
-                days_to_use = 1 
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use 
 
@@ -413,21 +416,29 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
                 
             elif any(k in key for k in Assistentes_Bares):
+                qty_to_use = qty_to_use
                 days_to_use = days + 2
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
     
-            elif any(k in key for k in Artistas): #IN colab also unable to detect 
+            elif any(k in key for k in Artistas):#IN colab also unable to detect 
                 if days < 2: 
                     for i in Sexta: 
-                        days_to_use = 0 
+                        numeric_it_unit_cost = 0 
+                        qty_to_use = qty_to_use
                         tag_to_use = 'DATA_BACKED'
-                        cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+                        cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
                 else:
                     numeric_it_unit_cost = band_fee_est
+                    qty_to_use = qty_to_use
                     tag_to_use = 'DATA_BACKED'
                     cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
-
+        
+        row.update(unit_cost=unit_cost_to_use, qty=qty_to_use, days=days_to_use,
+                   cost_total_pretax=cost_total_pretax_to_use,
+                   tag=tag_to_use,
+                   note='')
+        
         if tag_to_use == 'TEMPLATE_ESTIMATE':
             matched_ratio = next((rv for rk, rv in validated_ratios.items() if rk in key), None)
 
@@ -458,7 +469,8 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                    cost_total_pretax=cost_total_pretax_to_use,
                    tag=tag_to_use,
                    note='')
-            generated.append(row)
+            
+        generated.append(row)
     
     if event_type == 'fine_dining':
         return {
