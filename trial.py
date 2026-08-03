@@ -421,8 +421,8 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
     
-            elif any(k in key for k in Artistas):#IN colab also unable to detect 
-                numeric_it_unit_cost = band_fee_est
+            elif any(k in key for k in Artistas):
+                unit_cost_to_use = band_fee_est
                 qty_to_use = qty_to_use
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
