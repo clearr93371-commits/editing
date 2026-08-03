@@ -378,8 +378,8 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
               cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
             elif any(k in key for k in Food_Cost_chefs):
-                unit_cost = 80
-                numeric_it_unit_cost = unit_cost
+                unit_cost_to_use = 80
+                numeric_it_unit_cost = unit_cost_to_use
                 qty_to_use = total_pax_fd
                 days_to_use = 1 # Total pax, not per day
                 tag_to_use = 'DATA_BACKED'
