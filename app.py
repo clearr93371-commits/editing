@@ -425,13 +425,11 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 unit_cost_to_use = band_fee_est
                 qty_to_use = qty_to_use
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
                 if any(k in key for k in Sexta): 
                     if days <= 2: 
-                        numeric_it_unit_cost = 0 
+                        unit_cost_to_use = 0 
                         qty_to_use = qty_to_use
                         tag_to_use = 'DATA_BACKED'
-                        cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
         
         row.update(unit_cost=unit_cost_to_use, qty=qty_to_use, days=days_to_use,
                    cost_total_pretax=cost_total_pretax_to_use,
