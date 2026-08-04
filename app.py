@@ -508,7 +508,11 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 qty_to_use = pax_per_slot * slots * 4
                 days_to_use = 1
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
+                if any(k in key for k in Sexta_Chef):
+                    qty_to_use = 0 
+                    cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
+                    
 
             elif any(k in key for k in Montagens_Desmontagens):
                 days_to_use = 2
