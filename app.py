@@ -425,7 +425,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
             elif any(k in key for k in Staff): 
-                unit_cost_to_use = base_staff * (1.1 ^ ( day - 1 ))
+                unit_cost_to_use = base_staff * (1.1 ^ ( days - 1 ))
                 tag_to_use = 'DATA_BACKED'
     
             elif any(k in key for k in Artistas):
