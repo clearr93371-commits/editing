@@ -242,7 +242,7 @@ Montagens_Desmontagens = {'montagens e desmontagens bares', 'montagens e desmont
 Assistentes_Bares = {'assistentes bares executivo(01 dia antes, evento, 01 dia depois)'}
 Sexta = {'sexta almoço', 'sexta jantar'}
 Artistas = {'sexta almoço', 'sexta jantar', 'sábado almoço', 'sábado jantar', 'domingo almoço', 'domingo jantar'}
-Staff = {'STAFF', 'Staff'}
+Staff = {'staff'}
 
 
 def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, event_name,
