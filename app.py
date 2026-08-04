@@ -236,6 +236,7 @@ Food_Cost_chefs = {'food cost chefs', 'FOOD COST CHEFS'}
 Food_Cost_bites_1 = {'food cost bites 1'}
 Food_Cost_bites_2 = {'food cost bites 2'}
 Food_Cost_bites_3 = {'food cost bites 3'}
+Sexta_Chef = {'chef setxa'}
 Sommelier = {'sommelier'}
 Fardas = {'fardas'}
 Montagens_Desmontagens = {'montagens e desmontagens bares', 'montagens e desmontagens chefs'}
@@ -246,8 +247,11 @@ Staff = {'staff'}
 Catering_event = {'alimentação staff - durante evento'}
 Catering_pre = {'alimentação staff - montagens e desmontagens'}
 Catering_band = {'catering backstage bandas', 'bandas'}
-cleaning = {'limpeza'}
-security = {'segurança'}
+Cleaning = {'limpeza'}
+Security = {'segurança'}
+Equipa = {'equipa montagens média/fina')
+Outros = {'aluguer de viaturas'}
+Lenha = {'lenha'}
 
 
 def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, event_name,
@@ -369,14 +373,14 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
-            elif any(k in key for k in cleaning): 
+            elif any(k in key for k in Cleaning): 
                 umeric_it_unit_cost = unit_cost_to_use 
                 unit_cost_to_use = 10000
                 days_to_use = days
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
-            elif any(k in key for k in security): 
+            elif any(k in key for k in Security): 
                 umeric_it_unit_cost = unit_cost_to_use 
                 unit_cost_to_use = 10000
                 days_to_use = days
@@ -433,12 +437,12 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                     tag_to_use = 'DATA_BACKED'
                     cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
-            elif any(k in key for k in cleaning):
+            elif any(k in key for k in Cleaning):
                 days_to_use = days
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
-            elif any(k in key for k in security): 
+            elif any(k in key for k in Security): 
                 days_to_use = days
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
@@ -485,7 +489,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
 
-            elif any(k in key for k in cleaning): 
+            elif any(k in key for k in Cleaning): 
                 numeric_it_unit_cost = unit_cost_to_use 
                 unit_cost_to_use = 13
                 qty_to_use = 5
@@ -500,15 +504,9 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
             numeric_it_unit_cost = to_num(it['unit_cost'], 0)
             band_fee_est = 3500
             cost_staff = 8000 * (1.1 ** ( days - 1 ))
-            if any(k in key for k in Fee_CHEFS):
-                qty_to_use = 4
-                days_to_use = days
-                tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
-
-            elif any (k in key for k in Food_Cost_chefs):
+            if any (k in key for k in Food_Cost_chefs):
                 qty_to_use = pax_per_slot * slots * 4
-                days_to_use = days
+                days_to_use = 1
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
@@ -538,6 +536,12 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                         qty_to_use = qty_to_use
                         tag_to_use = 'DATA_BACKED'
 
+            elif any(k in key for k in Sexta_Chef):
+                if days <= 2: 
+                        unit_cost_to_use = 0 
+                        qty_to_use = qty_to_use
+                        tag_to_use = 'DATA_BACKED'
+
             elif any(k in key for k in Catering_band): 
                 numeric_it_unit_cost = unit_cost_to_use 
                 unit_cost_to_use = 25
@@ -559,7 +563,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
-            elif any(k in key for k in cleaning): 
+            elif any(k in key for k in Cleaning): 
                 numeric_it_unit_cost = unit_cost_to_use 
                 unit_cost_to_use = 13
                 qty_to_use = 250
@@ -567,14 +571,29 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
-            elif any(k in key for k in security): 
+            elif any(k in key for k in Security): 
                 numeric_it_unit_cost = unit_cost_to_use 
                 unit_cost_to_use = 13
                 qty_to_use = 205
                 days_to_use = days
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
-                
+
+            elif any(k in key for k in Equipa):
+                days_to_use = 6
+                tag_to_use = 'DATA_BACKED'
+                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+
+            elif any(k in key for k in Outros):
+                days_to_use = days + 7 
+                tag_to_use = 'DATA_BACKED'
+                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+
+            elif any(k in key for k in Lenha): 
+                qty_to_use = (4 * days) + 4
+                tag_to_use = 'DATA_BACKED'
+                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
+
             
         
         row.update(unit_cost=unit_cost_to_use, qty=qty_to_use, days=days_to_use,
