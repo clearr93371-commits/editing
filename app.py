@@ -236,7 +236,7 @@ Food_Cost_chefs = {'food cost chefs', 'FOOD COST CHEFS'}
 Food_Cost_bites_1 = {'food cost bites 1'}
 Food_Cost_bites_2 = {'food cost bites 2'}
 Food_Cost_bites_3 = {'food cost bites 3'}
-Sexta_Chef = {'chef setxa'}
+Sexta_Chef = {'chef sexta'}
 Sommelier = {'sommelier'}
 Fardas = {'fardas'}
 Montagens_Desmontagens = {'montagens e desmontagens bares', 'montagens e desmontagens chefs'}
@@ -352,12 +352,12 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                     tag_to_use = 'DATA_BACKED'
                     cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use # Apply after qty, days are determined
 
-            elif any(k in key for k in Staff):
+            elif key in Staff:
                 cost_staff_1 = 22500 * (1.3 ** (days - 1))
                 unit_cost_to_use = cost_staff_1
                 tag_to_use = 'DATA_BACKED'
 
-            elif any(k in key for k in Catering_band): 
+            elif key in Catering_band: 
                 numeric_it_unit_cost = unit_cost_to_use 
                 unit_cost_to_use = 25
                 days_to_use = days 
@@ -420,13 +420,13 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
               tag_to_use = 'DATA_BACKED'
               cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
-            elif any(k in key for k in Staff): 
+            elif key in Staff: 
                 unit_cost_to_use = 6300
                 if days > 1: 
                     unit_cost_to_use = 6300 * (1.1 ** (days - 1))
                 tag_to_use = 'DATA_BACKED'
 
-            elif any(k in key for k in Catering_band): 
+            elif key in Catering_band: 
                 days_to_use = days 
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * days_to_use
@@ -476,7 +476,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use 
 
-            elif any(k in key for k in Staff): 
+            elif key in Staff: 
                 qty_to_use = slots
                 numeric_it_unit_cost = unit_cost_to_use
                 unit_cost_to_use = 140 * 12 + 70 
@@ -521,7 +521,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
-            elif any(k in key for k in Staff): 
+            elif key in Staff: 
                 unit_cost_to_use = cost_staff
                 qty_to_use = qty_to_use
                 tag_to_use = 'DATA_BACKED'
@@ -542,7 +542,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                         qty_to_use = qty_to_use
                         tag_to_use = 'DATA_BACKED'
 
-            elif any(k in key for k in Catering_band): 
+            elif key in Catering_band: 
                 numeric_it_unit_cost = unit_cost_to_use 
                 unit_cost_to_use = 25
                 days_to_use = slots * days 
@@ -550,7 +550,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
-            elif any(k in key for k in Catering_event): 
+            elif key in Catering_event: 
                 numeric_it_unit_cost = unit_cost_to_use 
                 unit_cost_to_use = 16 
                 qty_to_use = 120 * slots
@@ -558,7 +558,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
-            elif any(k in key for k in Catering_pre): 
+            elif key in Catering_pre: 
                 days_to_use = days + 4
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
@@ -571,7 +571,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
-            elif any(k in key for k in Security): 
+            elif key in Security: 
                 numeric_it_unit_cost = unit_cost_to_use 
                 unit_cost_to_use = 13
                 qty_to_use = 205
