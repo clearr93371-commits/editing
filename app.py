@@ -249,7 +249,7 @@ Catering_pre = {'alimentação staff - montagens e desmontagens'}
 Catering_band = {'catering backstage bandas', 'bandas'}
 Cleaning = {'limpeza'}
 Security = {'segurança'}
-Equipa = {'equipa montagens média/fina')
+Equipa = {'equipa montagens média/fina'}
 Outros = {'aluguer de viaturas'}
 Lenha = {'lenha'}
 
