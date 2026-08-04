@@ -303,7 +303,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
 
             # Convert it['unit_cost'] to a number for internal calculations if it's used
             numeric_it_unit_cost = to_num(it['unit_cost'], 0)
-
+    
             if any(k in key for k in Fee_CHEFS):
                 n = math.floor(food_portion_per_day / 239)
                 no_of_chef_per_day = math.floor((90 * n) / 1500) + math.floor((60 * n) / 1200) + math.floor((24 * n) / 800) + math.floor((20 * n) / 1000) + math.floor((n * 45) / 1500)
@@ -343,6 +343,11 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                     tag_to_use = 'DATA_BACKED'
                     cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use # Apply after qty, days are determined
 
+                elif any(k in key for k in Staff):
+                    cost_staff_1 = 22500 * (1.3 ** (days - 1))
+                    unit_cost_to_use = cost_staff_1
+                    tag_to_use = 'DATA_BACKED'
+                    
         if event_type == 'corporate_lunch':
             food_portion = 4 * pax_per_day
             numeric_it_unit_cost = to_num(it['unit_cost'], 0)
