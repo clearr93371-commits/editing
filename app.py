@@ -243,6 +243,9 @@ Assistentes_Bares = {'assistentes bares executivo(01 dia antes, evento, 01 dia d
 Sexta = {'sexta almoço', 'sexta jantar'}
 Artistas = {'sexta almoço', 'sexta jantar', 'sábado almoço', 'sábado jantar', 'domingo almoço', 'domingo jantar'}
 Staff = {'staff'}
+Catering_event = {'alimentação staff - durante evento'}
+Catering_pre = {'alimentação staff - montagens e desmontagens'}
+Catering_band = {'catering backstage bandas', 'bandas'}
 
 
 def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, event_name,
@@ -347,6 +350,14 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                     cost_staff_1 = 22500 * (1.3 ** (days - 1))
                     unit_cost_to_use = cost_staff_1
                     tag_to_use = 'DATA_BACKED'
+
+                elif any(k in key for k in Catering_band): 
+                    numeric_it_unit_cost = unit_cost_to_use 
+                    unit_cost_to_use = 25
+                    days_to_use = days 
+                    qty_to_use = 4
+                    tag_to_use = 'DATA_BACKED'
+                    cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
                     
         if event_type == 'corporate_lunch':
             food_portion = 4 * pax_per_day
@@ -378,6 +389,11 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 if days > 1: 
                     unit_cost_to_use = 6300 * (1.1 ** (days - 1))
                 tag_to_use = 'DATA_BACKED'
+
+            elif any(k in key for k in Catering_band): 
+                days_to_use = days 
+                tag_to_use = 'DATA_BACKED'
+                cost_total_pretax_to_use = numeric_it_unit_cost * days_to_use
 
         if event_type == 'fine_dining': # Changed to 'fine_dining' to match event_type in EVENT_META
             numeric_it_unit_cost = to_num(it['unit_cost'], 0)
@@ -458,6 +474,14 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                         unit_cost_to_use = 0 
                         qty_to_use = qty_to_use
                         tag_to_use = 'DATA_BACKED'
+
+            elif any(k in key for k in Catering_band): 
+                    numeric_it_unit_cost = unit_cost_to_use 
+                    unit_cost_to_use = 25
+                    days_to_use = slots * days 
+                    qty_to_use = 2 #band per day 
+                    tag_to_use = 'DATA_BACKED'
+                    cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
             
         
