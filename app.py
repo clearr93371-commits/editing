@@ -958,9 +958,8 @@ with st.sidebar:
     st.caption("These must match the exact sheet names in your uploaded Excel. "
                "Edit them here if your file uses different names.")
 
-    # for sheet, meta in EVENT_META.items():
-    #     st.markdown(f"**`{sheet}`** → `{meta['event_type']}`  "
-    #                 f"{meta['days']}d · {meta['pax_per_day']} pax/day")
+    for sheet, meta in EVENT_META.items():
+        st.markdown(f"**`{sheet}`** → `{meta['event_type']}`  ")
 
     st.markdown("---")
     st.caption("Confidence colour key in generated Excel:\n"
@@ -1048,7 +1047,7 @@ with col_r:
         "Event type", options=list(EVENT_TYPE_KEYWORDS.keys()), index=0)
     manual_days = st.number_input("Days", min_value=1, value=2)
     manual_pax  = st.number_input("Pax per day (🔴Skip if not applicable)", min_value=1, value=2000)
-    manual_slots = st.number_input("Slot per day (🔴 Skip if not applicable)", min_value=1, value=2)
+    manual_slots = st.number_input("Slot per day/Total Slots (🔴 Skip if not applicable)", min_value=1, value=2)
     manual_pax_slot = st.number_input("Pax per slot(🔴 Skip if not applicable)", min_value=1, value=700)
     manual_month = st.selectbox ("Date of the event", options=month_cal, index=0)
     manual_name = st.text_input("Event name", value="New Event 2027")
