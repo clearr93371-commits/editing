@@ -358,6 +358,15 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 qty_to_use = 4
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+
+            elif any(k in key for k in Catering_event): 
+                numeric_it_unit_cost = unit_cost_to_use 
+                unit_cost_to_use = 10 
+                qty_to_use = 400 
+                days_to_use = days
+                tag_to_use = 'DATA_BACKED'
+                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+                
                     
         if event_type == 'corporate_lunch':
             food_portion = 4 * pax_per_day
@@ -367,6 +376,12 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 days_to_use = days
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+
+            elif any(k in key for k in Catering_event):  
+                if days > 1: 
+                    days_to_use = days
+                    tag_to_use = 'DATA_BACKED'
+                    cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
 
         if event_type == 'corporate_dinner':
@@ -394,6 +409,12 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 days_to_use = days 
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * days_to_use
+
+            elif any(k in key for k in Catering_event):  
+                if days > 1: 
+                    days_to_use = days
+                    tag_to_use = 'DATA_BACKED'
+                    cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
         if event_type == 'fine_dining': # Changed to 'fine_dining' to match event_type in EVENT_META
             numeric_it_unit_cost = to_num(it['unit_cost'], 0)
@@ -431,6 +452,11 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use 
                 
+            elif any(k in key for k in Catering_event): 
+                unit_cost_to_use = 100
+                qty_to_use = slots
+                tag_to_use = 'DATA_BACKED'
+                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
                 
 
         if event_type == 'Pop_Up':
@@ -483,6 +509,13 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                     tag_to_use = 'DATA_BACKED'
                     cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
+            elif any(k in key for k in Catering_event): 
+                numeric_it_unit_cost = unit_cost_to_use 
+                unit_cost_to_use = 16 
+                qty_to_use = 120 * slots
+                days_to_use = days
+                tag_to_use = 'DATA_BACKED'
+                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
             
         
         row.update(unit_cost=unit_cost_to_use, qty=qty_to_use, days=days_to_use,
