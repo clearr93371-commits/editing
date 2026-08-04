@@ -626,6 +626,11 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 cost_total_pretax_to_use = 0
                 tag_to_use = ('NEEDS_INPUT' if base_type != event_type
                               else 'TEMPLATE_ESTIMATE')
+                
+            ##added
+            if tag_to_use == 'TEMPLATE_ESTIMATE':
+                d_for_calc = to_num(it['days'], 1) if it['days'] not in (None, '', 0) else 1
+                cost_total_pretax_to_use = unit_cost_to_use * qty_to_use * d_for_calc
 
 
             row.update(unit_cost=unit_cost_to_use, qty=qty_to_use, days=it['days'],
@@ -939,9 +944,9 @@ def write_budget_xlsx(generated) -> bytes:
         item_total_com_iva = item_total_pretax * (1 + vat_rate_factor)
 
         # Apply 'extra' multipliers if applicable (from the budget logic)
-        if item['category'] in extra:
-            item_total_pretax *= 3 # This is 'v' from earlier
-            item_total_com_iva *= 5 # This is 'c' from earlier
+        # if item['category'] in extra:
+        #     item_total_pretax *= 3 # This is 'v' from earlier
+        #     item_total_com_iva *= 5 # This is 'c' from earlier
 
         category_actual_totals[item['category']] += item_total_com_iva
 
@@ -1183,7 +1188,7 @@ with col_r:
         "Event type", options=list(EVENT_TYPE_KEYWORDS.keys()), index=0)
     manual_days = st.number_input("Days", min_value=1, value=2)
     manual_pax  = st.number_input("Pax per day (🔴Skip if not applicable)", min_value=1, value=2000)
-    manual_slots = st.number_input("Slot per day/Total Slots (🔴 Skip if not applicable)", min_value=1, value=2)
+    manual_slots = st.number_input("Slot per day/Total Number of Slots (🔴 Skip if not applicable)", min_value=1, value=2)
     manual_pax_slot = st.number_input("Pax per slot(🔴 Skip if not applicable)", min_value=1, value=700)
     manual_month = st.selectbox ("Date of the event", options=month_cal, index=0)
     manual_name = st.text_input("Event name", value="New Event 2027")
@@ -1257,12 +1262,14 @@ if st.button("🔥 Generate budget"):
     m3.metric("🔴 Needs your input", tags.get('NEEDS_INPUT', 0))
 
     # Category cost preview
-    st.markdown("**Category totals (pre-tax estimate)**")
+    st.markdown("**Category totals (incl. IVA) — matches Excel column I**")
     cat_totals = defaultdict(float)
     for it in result['line_items']:
-        cat_totals[it['category']] += it['cost_total_pretax']
+        # Mirror the Excel formula: col G (pre-tax) × (1 + VAT rate) = col I
+        vat = 0.13 if it['description'] in reduced_13 else (0.06 if it['description'] in reduced_6 else 0.23)
+        cat_totals[it['category']] += it['cost_total_pretax'] * (1 + vat)
     table_rows = [
-        {"Category": k, "Est. pre-tax (€)": f"{v:,.0f}"}
+        {"Category": k, "Total incl. IVA (€)": f"{v:,.0f}"}
         for k, v in sorted(cat_totals.items(), key=lambda x: -x[1])
     ]
     st.table(table_rows)
