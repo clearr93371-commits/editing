@@ -242,6 +242,8 @@ Montagens_Desmontagens = {'montagens e desmontagens bares', 'montagens e desmont
 Assistentes_Bares = {'assistentes bares executivo(01 dia antes, evento, 01 dia depois)'}
 Sexta = {'sexta almoço', 'sexta jantar'}
 Artistas = {'sexta almoço', 'sexta jantar', 'sábado almoço', 'sábado jantar', 'domingo almoço', 'domingo jantar'}
+Staff = {'STAFF', 'Staff'}
+
 
 def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, event_name,
                     extra_notes, templates, validated_ratios, event_meta):
@@ -420,6 +422,11 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 days_to_use = days + 2
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+
+            elif any(k in key for k in Staff): 
+                base = 8000
+                unit_cost_to_use = base*(1+10%)^(days-1)
+                tag_to_use = 'DATA_BACKED'
     
             elif any(k in key for k in Artistas):
                 unit_cost_to_use = band_fee_est
@@ -430,6 +437,8 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                         unit_cost_to_use = 0 
                         qty_to_use = qty_to_use
                         tag_to_use = 'DATA_BACKED'
+
+            
         
         row.update(unit_cost=unit_cost_to_use, qty=qty_to_use, days=days_to_use,
                    cost_total_pretax=cost_total_pretax_to_use,
