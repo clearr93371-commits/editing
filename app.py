@@ -346,18 +346,18 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                     tag_to_use = 'DATA_BACKED'
                     cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use # Apply after qty, days are determined
 
-                elif any(k in key for k in Staff):
-                    cost_staff_1 = 22500 * (1.3 ** (days - 1))
-                    unit_cost_to_use = cost_staff_1
-                    tag_to_use = 'DATA_BACKED'
+            elif any(k in key for k in Staff):
+                cost_staff_1 = 22500 * (1.3 ** (days - 1))
+                unit_cost_to_use = cost_staff_1
+                tag_to_use = 'DATA_BACKED'
 
-                elif any(k in key for k in Catering_band): 
-                    numeric_it_unit_cost = unit_cost_to_use 
-                    unit_cost_to_use = 25
-                    days_to_use = days 
-                    qty_to_use = 4
-                    tag_to_use = 'DATA_BACKED'
-                    cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+            elif any(k in key for k in Catering_band): 
+                numeric_it_unit_cost = unit_cost_to_use 
+                unit_cost_to_use = 25
+                days_to_use = days 
+                qty_to_use = 4
+                tag_to_use = 'DATA_BACKED'
+                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
                     
         if event_type == 'corporate_lunch':
             food_portion = 4 * pax_per_day
