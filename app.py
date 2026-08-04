@@ -516,6 +516,12 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 days_to_use = days
                 tag_to_use = 'DATA_BACKED'
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+
+            elif any(k in key for k in Catering_pre): 
+                days_to_use = days + 4
+                tag_to_use = 'DATA_BACKED'
+                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+                
             
         
         row.update(unit_cost=unit_cost_to_use, qty=qty_to_use, days=days_to_use,
@@ -548,6 +554,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 cost_total_pretax_to_use = 0
                 tag_to_use = ('NEEDS_INPUT' if base_type != event_type
                               else 'TEMPLATE_ESTIMATE')
+
 
             row.update(unit_cost=unit_cost_to_use, qty=qty_to_use, days=it['days'],
                    cost_total_pretax=cost_total_pretax_to_use,
