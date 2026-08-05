@@ -237,7 +237,7 @@ Artistas = {'sexta almoço', 'sexta jantar', 'sábado almoço', 'sábado jantar'
 Staff = {'staff'}
 Catering_event = {'alimentação staff - durante evento'}
 Catering_pre = {'alimentação staff - montagens e desmontagens', 'alimentação staff montagens e desmontagens'}
-Catering_band = {'catering backstage bandas', 'bandas'}
+Catering_band = {'catering backstage bandas'}
 Cleaning = {'limpeza'}
 Security = {'segurança'}
 Equipa = {'equipa montagens média/fina'}
@@ -347,38 +347,33 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 cost_staff_1 = 22500 * (1.3 ** (days - 1))
                 unit_cost_to_use = cost_staff_1
                 tag_to_use = 'DATA_BACKED'
+                cost_total_pretax_to_use = unit_cost_to_use * qty_to_use
 
             elif key in Catering_band: 
-                numeric_it_unit_cost = unit_cost_to_use 
                 unit_cost_to_use = 25
                 days_to_use = days 
                 qty_to_use = 4
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+                cost_total_pretax_to_use = unit_cost_to_use * qty_to_use * days_to_use
 
             elif any(k in key for k in Catering_event): 
-                numeric_it_unit_cost = unit_cost_to_use 
                 unit_cost_to_use = 10 
                 qty_to_use = 400 
                 days_to_use = days
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+                cost_total_pretax_to_use = unit_cost_to_use * qty_to_use * days_to_use
 
             elif any(k in key for k in Cleaning): 
-                umeric_it_unit_cost = unit_cost_to_use 
                 unit_cost_to_use = 10000
                 days_to_use = days
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+                cost_total_pretax_to_use = unit_cost_to_use * qty_to_use * days_to_use
 
             elif any(k in key for k in Security): 
-                umeric_it_unit_cost = unit_cost_to_use 
                 unit_cost_to_use = 10000
                 days_to_use = days
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
-                
-                
+                cost_total_pretax_to_use = unit_cost_to_use * qty_to_use * days_to_use
                     
         if event_type == 'corporate_lunch':
             food_portion = 4 * pax_per_day
@@ -412,11 +407,12 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
               cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
             elif key in Staff: 
-                unit_cost_to_use = 6300
                 if days > 1: 
                     unit_cost_to_use = 6300 * (1.1 ** (days - 1))
+                else:
+                    unit_cost_to_use = 6300
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
+                cost_total_pretax_to_use = unit_cost_to_use * qty_to_use
 
             elif key in Catering_band: 
                 days_to_use = days 
@@ -426,8 +422,8 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
             elif any(k in key for k in Catering_event):  
                 if days > 1: 
                     days_to_use = days
-                    tag_to_use = 'DATA_BACKED'
-                    cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+                tag_to_use = 'DATA_BACKED'
+                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
             elif any(k in key for k in Cleaning):
                 days_to_use = days
@@ -828,12 +824,14 @@ def write_budget_xlsx(generated) -> bytes:
     total_row = r + 1
     ws.cell(total_row, 3, 'TOTAL').font = Font(name='Arial Narrow',
                                                size=11, bold=True)
+    for col in range(1, len(COLUMNS) + 1):
+        ws.cell(total_row, col).fill = PatternFill('solid', fgColor='D9D9D9')
+        
     for col, letter in ((7, 'G'), (8, 'H'), (9, 'I')):
         rng  = '+'.join(f'{letter}{row_num}' for _, row_num in grand_total_rows) #changed
         cell = ws.cell(total_row, col, '=' + rng)
         cell.font           = Font(name='Arial Narrow', size=11, bold=True)
         cell.number_format  = '#,##0.00'
-        cell.fill           = PatternFill('solid', fgColor='D9D9D9')
 
     error_row = total_row + 2
     l_row = error_row + 3
