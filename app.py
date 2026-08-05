@@ -1245,9 +1245,9 @@ if st.button("🔥 Generate budget"):
             'event_name':  manual_name,
         }
         
-    if params['event_type'] in 'fine_dining':
+    if params['event_type'] in ('fine_dining'):
         params['pax_per_day'] = manual_pax_slot
-    elif params['event_type'] in 'Pop_Up':
+    elif params['event_type'] in ('Pop_Up'):
         params['pax_per_day'] = manual_pax_slot * manual_slots
     else: 
         params['pax_per_day'] = manual_pax
