@@ -1204,10 +1204,22 @@ with col_r:
     manual_pax_slot = st.number_input("Pax per slot(🔴 Skip if not applicable)", min_value=1, value=700)
     manual_month = st.selectbox ("Date of the event", options=month_cal, index=0)
     manual_name = st.text_input("Event name", value="New Event 2027")
-        
+
+    if manual_type == 'Pop-Up': 
+        return manual_type = 'Pop_Up'
+    elif manual_type == 'Chefs on Fire':
+        return manual_type = 'festival'
+    elif manual_type == 'Almoço Corp.':
+        return manual_type = 'corporate_lunch'
+    elif manual_type == 'Jantar Corp.':
+        return manual_type = 'corporate_dinner'
+    elif manual_type == 'Fine Dining':
+        return manual_type = 'fine_dining'
 
 use_manual = not user_text.strip()
 
+    
+    
 # ── Step 3: generate ─────────────────────────────────────────────────────────
 st.markdown("### 3 · Generate")
 
