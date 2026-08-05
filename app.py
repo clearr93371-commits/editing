@@ -1269,7 +1269,7 @@ if st.button("🔥 Generate budget"):
             )
         st.stop()
     
-     with st.spinner("Building budget…"):
+    with st.spinner("Building budget…"):
         result     = generate_budget(
                 event_type       = params['event_type'],
                 pax_per_day      = params['pax_per_day'],
