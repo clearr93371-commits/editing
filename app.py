@@ -1115,7 +1115,7 @@ EVENT_META = {
     'wb_Pop-up': {
         'event_name': "Chef's on Fire – Pop-up",
         'event_type': 'Pop_Up',
-        'days': 3, 'slots': 2, 'pax_per_slot': 600',
+        'days': 3, 'slots': 2, 'pax_per_slot': 600,
     },
 }
 
@@ -1245,7 +1245,9 @@ if st.button("🔥 Generate budget"):
             'event_name':  manual_name,
         }
         
-        if params['event_type'] in ('fine_dining', 'Pop_Up'):
+        if params['event_type'] in 'fine_dining':
+            params['pax_per_day'] = manual_pax_slot
+        elif params['event_type'] in 'Pop_Up':
             params['pax_per_day'] = manual_pax_slot * manual_slots
         else: 
             params['pax_per_day'] = manual_pax
