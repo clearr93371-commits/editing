@@ -696,6 +696,7 @@ CATEGORY_FILL = PatternFill('solid', fgColor='BAD2D4')
 CATEGORY_FONT = Font(name='Arial Narrow', size=10, bold=True, color='000000')
 SUBCAT_FONT   = Font(name='Arial Narrow', size=10, bold=True, color='000000')
 BASE_FONT     = Font(name='Arial Narrow', size=10)
+
 TAG_FONT = {
     'DATA_BACKED':       Font(name='Arial Narrow', size=10, color='006100'),
     'TEMPLATE_ESTIMATE': Font(name='Arial Narrow', size=10, color='9C6500'),
@@ -870,6 +871,30 @@ def write_budget_xlsx(generated) -> bytes:
     min.font = Font(name='Arial Narrow', size=11, bold=True)
     min.number_format = '#,##0.00'
 
+    #add income part
+    inc_header_row = l_row + 1
+    ws.cell(inc_header_row, 3, 'INCOME').font = Font(name='Arial Narrow', size=11, bold=True)
+    for col in range(1, len(COLUMNS) + 1):
+        ws.cell(inc_header_row, col).fill = CATEGORY_FILL
+
+    in_items = ['Patrocinio 1', 'Patrocinio 2', 'Patrocinio 3', 'Patrocinio 4', 'Patrocinio 5',
+                'Patrocinio 6', 'Bilheteira', 'Receita Bares']
+
+    current_income_item_row = inc_header_row + 1
+    for item_text in in_items:
+        ws.cell(current_income_item_row, 3, item_text).font = Font(name='Arial Narrow', size=11, bold=False)
+        current_income_item_row += 1
+
+    inc_ttl_r = current_income_item_row + 1
+    inc_final_r = inc_ttl_r + 2
+    ws.cell(inc_ttl_r, 3, 'TOTAL').font = Font(name='Arial Narrow', size=11, bold=True, color='FFFFFF')
+    ws.cell(inc_final_r, 3, 'SALDO FINAL').font = Font(name='Arial Narrow', size=11, bold=True, color='FFFFFF')
+    for col in range(1, len(COLUMNS) + 1):
+        ws.cell(inc_ttl_r, col).fill = PatternFill('solid', fgColor='595959')
+        ws.cell(inc_final_r, col).fill = PatternFill('solid', fgColor='8A9F8E')
+    
+    
+    
     options_situacao = [
           'VALOR ESTIMADO',
           'ORÇAMENTADO',
@@ -922,10 +947,11 @@ def write_budget_xlsx(generated) -> bytes:
         forma_de_pagameto_dv.add(f'{get_column_letter(2)}{start_row}:{get_column_letter(2)}{end_row}')
         patrocinio_dv.add(f'{get_column_letter(10)}{start_row}:{get_column_letter(10)}{end_row}')
 
-
+    
+    
 
     # Add a pie chart for category breakdown
-    chart_start_row = l_row + 3
+    chart_start_row = last_inc_row + 3
 
     # 1. Create a summary table for the chart data
     summary_header_row = chart_start_row
