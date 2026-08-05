@@ -892,9 +892,9 @@ def write_budget_xlsx(generated) -> bytes:
     for col in range(1, len(COLUMNS) + 1):
         ws.cell(inc_ttl_r, col).fill = PatternFill('solid', fgColor='595959')
         ws.cell(inc_final_r, col).fill = PatternFill('solid', fgColor='8A9F8E')
-    
-    
-    
+
+    last_inc_row = inc_final_r + 1 
+
     options_situacao = [
           'VALOR ESTIMADO',
           'ORÇAMENTADO',
