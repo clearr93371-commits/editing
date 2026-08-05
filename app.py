@@ -1110,7 +1110,7 @@ EVENT_META = {
     'wb_Fine Dining': {
         'event_name': "Chef's on Fire – Fine Dining",
         'event_type': 'fine_dining',
-        'days': 8, 'pax_per_day': 18,
+        'days': 8, 'pax_per_day': 24,
     },
     'wb_Pop-up': {
         'event_name': "Chef's on Fire – Pop-up",
@@ -1120,7 +1120,7 @@ EVENT_META = {
 }
 
 
-for m in EVENT_META.values():
+for m in EVENT_META.values(): 
     m['total_pax'] = m['pax_per_day'] * m['days']
 
 # ── sidebar: show template info ───────────────────────────────────────────────
@@ -1204,16 +1204,16 @@ st.success(
 # ── Step 2: describe the new event ───────────────────────────────────────────
 st.markdown("### 2 · Describe the new event")
 
-col_l, col_r = st.columns([3, 2])
+col_l, col_r = st.columns([2, 3])
 with col_l:
     user_text = st.text_area(
         "Plain-language description",
-        placeholder='e.g. "3-day festival, 2500 pax per day, called Lisbon Fire Fest 2027"',
+        placeholder='Please enter extra info. (e.g. 11 setembro - 18h00 às 23h00)',
         height=90,
         label_visibility="collapsed",
-    )
+#     )
 with col_r:
-    st.caption("Or fill in the fields below to skip the text description.")
+    st.caption("The details of your event")
     manual_type = st.selectbox(
         "Event type", options=list(EVENT_TYPE_KEYWORDS.keys()), index=0)
     manual_days = st.number_input("Days", min_value=1, value=2)
@@ -1224,15 +1224,13 @@ with col_r:
     manual_name = st.text_input("Event name", value="New Event 2027")
         
 
-use_manual = not user_text.strip()
+# use_manual = not user_text.strip()
 
 # ── Step 3: generate ─────────────────────────────────────────────────────────
 st.markdown("### 3 · Generate")
 
 if st.button("🔥 Generate budget"):
-    # Resolve params: text box wins if filled, otherwise use the manual fields
-    if use_manual:
-        params = {
+   params = {
             'event_type': manual_type,
             'days':        manual_days,
             'pax_per_day': manual_pax,
@@ -1246,13 +1244,13 @@ if st.button("🔥 Generate budget"):
             params['pax_per_day'] = manual_pax_slot * manual_slots
         else: 
             params['pax_per_day'] = manual_pax
-    else:
-        params = extract_params(user_text)
-        # Let the manual fields fill in anything the text didn't provide
-        if params['pax_per_day'] is None:
-            params['pax_per_day'] = manual_days
-        if params['event_name'] == 'New Event':
-            params['event_name'] = manual_name
+    # else:
+    #     params = extract_params(user_text)
+    #     # Let the manual fields fill in anything the text didn't provide
+    #     if params['pax_per_day'] is None:
+    #         params['pax_per_day'] = manual_days
+    #     if params['event_name'] == 'New Event':
+    #         params['event_name'] = manual_name
 
     if params['event_type'] not in templates:
         st.error(
