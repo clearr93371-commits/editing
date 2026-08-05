@@ -1259,17 +1259,17 @@ if st.button("🔥 Generate budget"):
     #     if params['event_name'] == 'New Event':
     #         params['event_name'] = manual_name
 
-    if params['event_type'] not in templates:
-        st.error(
+if params['event_type'] not in templates:
+    st.error(
             f"No historical template found for event type "
             f"**{params['event_type']}**. "
             f"Available types: {', '.join(templates.keys())}. "
             "Check the sheet names in the sidebar."
         )
-        st.stop()
+    st.stop()
 
-    with st.spinner("Building budget…"):
-        result     = generate_budget(
+ with st.spinner("Building budget…"):
+    result     = generate_budget(
             event_type       = params['event_type'],
             pax_per_day      = params['pax_per_day'],
             days             = params['days'],
@@ -1282,7 +1282,7 @@ if st.button("🔥 Generate budget"):
             validated_ratios = validated_ratios,
             event_meta       = EVENT_META,
         )
-        xlsx_bytes = write_budget_xlsx(result)
+    xlsx_bytes = write_budget_xlsx(result)
 
     # ── Results ───────────────────────────────────────────────────────────────
     tags = Counter(it['tag'] for it in result['line_items'])
