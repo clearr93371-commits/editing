@@ -1225,7 +1225,7 @@ use_manual = not user_text.strip()
 st.markdown("### 3 · Generate")
 
 if st.button("🔥 Generate budget"):
-    if user_manual: 
+    if use_manual: 
         params = {
             'event_type': event_type,
             'days':        manual_days,
