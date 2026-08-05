@@ -1206,15 +1206,15 @@ with col_r:
     manual_name = st.text_input("Event name", value="New Event 2027")
 
     if manual_type == 'Pop-Up': 
-        return manual_type == 'Pop_Up'
-    elif manual_type == 'Chefs on Fire':
-        return manual_type == 'festival'
+        'event_type' == 'Pop_Up'
+    elif manual_type == 'Che ire':
+        'event_type' == 'festival'
     elif manual_type == 'Almoço Corp.':
-        return manual_type == 'corporate_lunch'
+        'event_type' == 'corporate_lunch'
     elif manual_type == 'Jantar Corp.':
-        return manual_type == 'corporate_dinner'
+        'event_type' == 'corporate_dinner'
     elif manual_type == 'Fine Dining':
-        return manual_type == 'fine_dining'
+        'event_type' == 'fine_dining'
 
 use_manual = not user_text.strip()
 
@@ -1225,8 +1225,19 @@ st.markdown("### 3 · Generate")
 
 if st.button("🔥 Generate budget"):
     if use_manual:
+        if manual_type == 'Pop-Up': 
+            event_type == 'Pop_Up'
+        elif manual_type == 'Chefs on Fire':
+            event_type == 'festival'
+        elif manual_type == 'Almoço Corp.':
+            event_type == 'corporate_lunch'
+        elif manual_type == 'Jantar Corp.':
+            event_type == 'corporate_dinner'
+        elif manual_type == 'Fine Dining':
+            event_type == 'fine_dining'
+            
        params = {
-            'event_type': manual_type,
+            'event_type': event_type,
             'days':        manual_days,
             'pax_per_day': manual_pax,
             'slots': manual_slots, 
@@ -1235,19 +1246,7 @@ if st.button("🔥 Generate budget"):
             'event_name':  manual_name,
         }
         
-    # if params['event_type'] in ('fine_dining'):
-    #     params['pax_per_day'] = manual_pax_slot
-    # elif params['event_type'] in ('Pop_Up'):
-    #     params['pax_per_day'] = manual_pax_slot * manual_slots
-    # else: 
-    #     params['pax_per_day'] = manual_pax
-    # else:
-    #     params = extract_params(user_text)
-    #     # Let the manual fields fill in anything the text didn't provide
-    #     if params['pax_per_day'] is None:
-    #         params['pax_per_day'] = manual_days
-    #     if params['event_name'] == 'New Event':
-    #         params['event_name'] = manual_name
+
 
     if params['event_type'] not in templates:
         st.error(
