@@ -83,16 +83,7 @@ st.markdown('<p class="wordmark">🔥 Chef\'s on Fire</p>', unsafe_allow_html=Tr
 st.markdown('<p class="tagline">Budget Generator — internal planning tool</p>',
             unsafe_allow_html=True)
 
-# ═════════════════════════════════════════════════════════════════════════════
-#  ALL LOGIC BELOW IS COPIED DIRECTLY FROM YOUR NOTEBOOK CELLS
-#  The only changes are:
-#    • SRC is now a BytesIO from st.file_uploader  (was files.upload())
-#    • write_budget_xlsx returns bytes              (was saving to disk)
-#    • user inputs come from st.* widgets          (was input() / input())
-#    • st.download_button replaces files.download()
-# ═════════════════════════════════════════════════════════════════════════════
-
-# ── CELL 9 – constants & parser ───────────────────────────────────────────────
+# ── constants & parser ───────────────────────────────────────────────
 COLS = ['situacao','pagamento','descricao','custo_unit','unit','dias',
         'custo_total','iva','total_com_iva','patrocinio','entidade',
         'NA ADJUDICAÇÃO','ATÉ O EVENTO',
@@ -701,10 +692,10 @@ def write_budget_xlsx(generated) -> bytes:
     """Returns the .xlsx file as bytes so Streamlit can serve it as a download."""
     wb_out = Workbook()
     ws     = wb_out.active
-    ws.title = 'Budget Draft'
+    ws.title = f'wb_{generated['event_type']} '
 
     ws.merge_cells('A1:F1')
-    ws['A1'] = 'WORKING BUDGET'
+    ws['A1'] = f'BUDGET_{generated['event_type']}'
     ws['A1'].font = Font(name='Arial Narrow', size=12, bold=True)
     ws.merge_cells('G1:M1')
     ws['G1'] = generated['event_name']
@@ -1043,11 +1034,11 @@ def write_budget_xlsx(generated) -> bytes:
 
 # ── CELL 19 – NL extractor ────────────────────────────────────────────────────
 EVENT_TYPE_KEYWORDS = {
-    'Pop_Up' : ['Pop-up', 'Pop up', 'pop up', 'pop-up', 'POPUP', 'pop up event', 'Pop Up Event'],
-    'festival': ['festival', 'Cascais', 'food festival', 'Chefs On Fire', 'COF'],
-    'corporate_lunch': ['corporate lunch', 'Almoço Corp', 'Almoço', 'Almoco Corp', 'Almoco','lunch event'],
-    'corporate_dinner': ['corporate dinner','dinner event','Jantar Corp', 'Jantar' ],
-    'fine_dining': ['fine dining', 'Fine Dining']
+    'Pop-Up' : ['Pop-up', 'Pop up', 'pop up', 'pop-up', 'POPUP', 'pop up event', 'Pop Up Event'],
+    'Chefs on Fire': ['festival', 'Cascais', 'food festival', 'Chefs On Fire', 'COF'],
+    'Almoço Corp.': ['corporate lunch', 'Almoço Corp', 'Almoço', 'Almoco Corp', 'Almoco','lunch event'],
+    'Jantar Corp.': ['corporate dinner','dinner event','Jantar Corp', 'Jantar' ],
+    'Fine Dining': ['fine dining', 'Fine Dining', 'dining']
 }
 
 def extract_params(text):
