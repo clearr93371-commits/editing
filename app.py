@@ -1110,18 +1110,23 @@ EVENT_META = {
     'wb_Fine Dining': {
         'event_name': "Chef's on Fire – Fine Dining",
         'event_type': 'fine_dining',
-        'days': 8, 'pax_per_day': 24,
+        'days': 8, 'slots' : 6, 'pax_per_slot': 24,
     },
     'wb_Pop-up': {
         'event_name': "Chef's on Fire – Pop-up",
         'event_type': 'Pop_Up',
-        'days': 3, 'pax_per_day': 1200,
+        'days': 3, 'slots': 2, 'pax_per_slot': 600',
     },
 }
 
 
 for m in EVENT_META.values(): 
-    m['total_pax'] = m['pax_per_day'] * m['days']
+    if EVENT_META.keys() == 'wb_Fine Dining':
+        m['total_pax'] = m['pax_per_slot'] * m['slots']
+    elif EVENT_META.keys() == 'wb_Pop-up':
+        m['total_pax'] = m['pax_per_slot'] * m['slots'] * m['days']
+    else: 
+        m['total_pax'] = m['pax_per_day'] * m['days']
 
 # ── sidebar: show template info ───────────────────────────────────────────────
 with st.sidebar:
@@ -1294,8 +1299,8 @@ if st.button("🔥 Generate budget"):
     cat_totals = defaultdict(float)
     for it in result['line_items']:
         # Mirror the Excel formula: col G (pre-tax) × (1 + VAT rate) = col I
-        vat = 0.13 if it['description'] in reduced_13 else (0.06 if it['description'] in reduced_6 else 0.23)
-        cat_totals[it['category']] += it['cost_total_pretax'] * (1 + vat)
+        #vat = 0.13 if it['description'] in reduced_13 else (0.06 if it['description'] in reduced_6 else 0.23)
+        cat_totals[it['category']] += it['cost_total_pretax'] 
     table_rows = [
         {"Category": k, "Total incl. IVA (€)": f"{v:,.0f}"}
         for k, v in sorted(cat_totals.items(), key=lambda x: -x[1])
