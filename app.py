@@ -1121,9 +1121,9 @@ EVENT_META = {
 
 
 for m in EVENT_META.values(): 
-    if EVENT_META.keys() == 'wb_Fine Dining':
+    if m['event_type'] == 'fine_dining':
         m['total_pax'] = m['pax_per_slot'] * m['slots']
-    elif EVENT_META.keys() == 'wb_Pop-up':
+    elif m['event_type'] == 'Pop_Up':
         m['total_pax'] = m['pax_per_slot'] * m['slots'] * m['days']
     else: 
         m['total_pax'] = m['pax_per_day'] * m['days']
