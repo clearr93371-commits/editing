@@ -1229,13 +1229,14 @@ with col_r:
     manual_name = st.text_input("Event name", value="New Event 2027")
         
 
-# use_manual = not user_text.strip()
+use_manual = not user_text.strip()
 
 # ── Step 3: generate ─────────────────────────────────────────────────────────
 st.markdown("### 3 · Generate")
 
 if st.button("🔥 Generate budget"):
-   params = {
+    if use_manual:
+       params = {
             'event_type': manual_type,
             'days':        manual_days,
             'pax_per_day': manual_pax,
@@ -1259,30 +1260,30 @@ if st.button("🔥 Generate budget"):
     #     if params['event_name'] == 'New Event':
     #         params['event_name'] = manual_name
 
-if params['event_type'] not in templates:
-    st.error(
-            f"No historical template found for event type "
-            f"**{params['event_type']}**. "
-            f"Available types: {', '.join(templates.keys())}. "
-            "Check the sheet names in the sidebar."
-        )
-    st.stop()
-
- with st.spinner("Building budget…"):
-    result     = generate_budget(
-            event_type       = params['event_type'],
-            pax_per_day      = params['pax_per_day'],
-            days             = params['days'],
-            pax_per_slot = params['pax_per_slot'],
-            slots = params['slots'],
-            month = params['month'], 
-            event_name       = params['event_name'],
-            extra_notes      = user_text,
-            templates        = templates,
-            validated_ratios = validated_ratios,
-            event_meta       = EVENT_META,
-        )
-    xlsx_bytes = write_budget_xlsx(result)
+    if params['event_type'] not in templates:
+        st.error(
+                f"No historical template found for event type "
+                f"**{params['event_type']}**. "
+                f"Available types: {', '.join(templates.keys())}. "
+                "Check the sheet names in the sidebar."
+            )
+        st.stop()
+    
+     with st.spinner("Building budget…"):
+        result     = generate_budget(
+                event_type       = params['event_type'],
+                pax_per_day      = params['pax_per_day'],
+                days             = params['days'],
+                pax_per_slot = params['pax_per_slot'],
+                slots = params['slots'],
+                month = params['month'], 
+                event_name       = params['event_name'],
+                extra_notes      = user_text,
+                templates        = templates,
+                validated_ratios = validated_ratios,
+                event_meta       = EVENT_META,
+            )
+        xlsx_bytes = write_budget_xlsx(result)
 
     # ── Results ───────────────────────────────────────────────────────────────
     tags = Counter(it['tag'] for it in result['line_items'])
