@@ -479,10 +479,9 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
 
             elif key in Staff: 
                 qty_to_use = slots
-                numeric_it_unit_cost = unit_cost_to_use
                 unit_cost_to_use = 140 * 12 + 70 
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use 
+                cost_total_pretax_to_use = unit_cost_to_use * qty_to_use 
                 
             elif any(k in key for k in Catering_event): 
                 unit_cost_to_use = 100
@@ -495,7 +494,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 qty_to_use = 5
                 days_to_use = slots
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use =unit_cost_to_use * qty_to_use * days_to_use
+                cost_total_pretax_to_use = unit_cost_to_use * qty_to_use * days_to_use
 
         if event_type == 'Pop_Up':
             numeric_it_unit_cost = to_num(it['unit_cost'], 0)
