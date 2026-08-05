@@ -1205,29 +1205,28 @@ with col_r:
     manual_month = st.selectbox ("Date of the event", options=month_cal, index=0)
     manual_name = st.text_input("Event name", value="New Event 2027")
 
+    if manual_type == 'Pop-Up': 
+        event_type = 'Pop_Up'
+    elif manual_type == 'Chefs on Fire':
+        event_type = 'festival'
+    elif manual_type == 'Almoço Corp.':
+        event_type = 'corporate_lunch'
+    elif manual_type == 'Jantar Corp.':
+        event_type = 'corporate_dinner'
+    elif manual_type == 'Fine Dining':
+        event_type = 'fine_dining'
+    else: 
+        event_type = manual_type
 use_manual = not user_text.strip()
-
+    
     
     
 # ── Step 3: generate ─────────────────────────────────────────────────────────
 st.markdown("### 3 · Generate")
 
 if st.button("🔥 Generate budget"):
-    if use_manual:
-        if manual_type == 'Pop-Up': 
-            event_type = 'Pop_Up'
-        elif manual_type == 'Chefs on Fire':
-            event_type = 'festival'
-        elif manual_type == 'Almoço Corp.':
-            event_type = 'corporate_lunch'
-        elif manual_type == 'Jantar Corp.':
-            event_type = 'corporate_dinner'
-        elif manual_type == 'Fine Dining':
-            event_type = 'fine_dining'
-        else: 
-            event_type = manual_type
-            
-       params = {
+    if user_manual: 
+        params = {
             'event_type': event_type,
             'days':        manual_days,
             'pax_per_day': manual_pax,
