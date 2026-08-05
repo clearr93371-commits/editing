@@ -1216,7 +1216,7 @@ with col_l:
         placeholder='Please enter extra info. (e.g. 11 setembro - 18h00 às 23h00)',
         height=90,
         label_visibility="collapsed",
-#     )
+     )
 with col_r:
     st.caption("The details of your event")
     manual_type = st.selectbox(
