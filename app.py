@@ -767,16 +767,16 @@ def write_budget_xlsx(generated) -> bytes:
         ('CUSTO UNITÁRIO ESTIMATIVO', 12), ('UNIT', 8), ('DIAS', 7),
         ('CUSTO TOTAL\nESTIMATIVO', 13), ('IVA', 11), ('TOTAL\n(COM IVA)', 13),
         ('PATROCÍNIO', 11), ('ENTIDADE', 15), ('NA ADJUDICAÇÃO(COM IVA)', 15) , ('ATÉ O EVENTO(COM IVA)', 15),
-        ('A 30 DIAS',11), ('A 60 DIAS', 11), ('CONFIANÇA / CONFIDENCE', 30),
-        ('OBSERVAÇÕES', 40),('valor_total', 40) ]
+        ('A 30 DIAS',11), ('A 60 DIAS', 11),
+        ('OBSERVAÇÕES', 40),('VALOR TOTAL COM IVA', 40) ]
     else:
         COLUMNS = [
         ('SITUAÇÃO', 14), ('FORMA DE PAGAMENTO', 16), ('DESCRIÇÃO', 42),
         ('CUSTO UNITÁRIO ESTIMATIVO', 12), ('UNIT', 8), ('DIAS', 7),
         ('CUSTO TOTAL\nESTIMATIVO', 13), ('IVA', 11), ('TOTAL\n(COM IVA)', 13),
         ('PATROCÍNIO', 11), ('ENTIDADE', 15), (A + '(COM IVA)', 15), (B + '(COM IVA)', 15), (C + '(COM IVA)', 15),
-        (D + '(COM IVA)', 15), ('A 30 DIAS',11), ('A 60 DIAS', 11), ('CONFIANÇA / CONFIDENCE', 30),
-        ('OBSERVAÇÕES', 40),('valor_total', 40)]
+        (D + '(COM IVA)', 15), ('A 30 DIAS',11), ('A 60 DIAS', 11),
+        ('OBSERVAÇÕES', 40),('VALOR TOTAL COM IVA', 40)]
         
     header_row = 4
     for idx, (label, width) in enumerate(COLUMNS, start=1):
@@ -834,12 +834,12 @@ def write_budget_xlsx(generated) -> bytes:
             ws.cell(r, 8, f"=G{r}*{vat}")
             ws.cell(r, 9, f"=G{r}+H{r}")
             
-            ws.cell(r, 11, item.get('entity') or '')
-            tag_cell      = ws.cell(r, 12, TAG_LABEL[item['tag']])
-            tag_cell.font = TAG_FONT[item['tag']]
-            ws.cell(r, 13, item.get('note', ''))
+            # ws.cell(r, 11, item.get('entity') or '')
+            # tag_cell      = ws.cell(r, 12, TAG_LABEL[item['tag']])
+            # tag_cell.font = TAG_FONT[item['tag']]
+            # ws.cell(r, 13, item.get('note', ''))
             
-            for col in (1, 2, 3, 10, 11, 13):
+            for col in (1, 2, 3, 10):
                 ws.cell(r, col).font = BASE_FONT
             ws.cell(r, 4).font = TAG_FONT[item['tag']]
             for col in (4, 7, 8, 9):
@@ -847,15 +847,38 @@ def write_budget_xlsx(generated) -> bytes:
             r += 1
 
         last_item_row = r - 1
+        
         if last_item_row >= first_item_row:
-            ws.cell(cat_row, 7, f"=SUM(G{first_item_row}:G{last_item_row})")
-            ws.cell(cat_row, 8, f"=SUM(H{first_item_row}:H{last_item_row})")
-            ws.cell(cat_row, 9, f"=SUM(I{first_item_row}:I{last_item_row})")
-            
-            for col in (7, 8, 9):
-                ws.cell(cat_row, col).font          = CATEGORY_FONT
-                ws.cell(cat_row, col).number_format = '#,##0.00'
+            if event_type == 'Pop_Up':
+                ws.cell(cat_row, 7, f"=SUM(G{first_item_row}:G{last_item_row})")
+                ws.cell(cat_row, 8, f"=SUM(H{first_item_row}:H{last_item_row})")
+                ws.cell(cat_row, 9, f"=SUM(I{first_item_row}:I{last_item_row})")
+                ws.cell(cat_row, 12, f"=SUM(I{first_item_row}:I{last_item_row})")
+                ws.cell(cat_row, 13, f"=SUM(I{first_item_row}:I{last_item_row})")
+                Ws.cell(cat_row, 14, f"=SUM(I{first_item_row}:I{last_item_row})")
+                ws.cell(cat_row, 15, f"=SUM(I{first_item_row}:I{last_item_row})")
+                ws.cell(cat_row, 17, f"=SUM(I{first_item_row}:I{last_item_row})")
+                for col in (7, 8, 9, 12, 13, 14, 15, 17):
+                    ws.cell(cat_row, col).font          = CATEGORY_FONT
+                    ws.cell(cat_row, col).number_format = '#,##0.00'
+            else: 
+                ws.cell(cat_row, 7, f"=SUM(G{first_item_row}:G{last_item_row})")
+                ws.cell(cat_row, 8, f"=SUM(H{first_item_row}:H{last_item_row})")
+                ws.cell(cat_row, 9, f"=SUM(I{first_item_row}:I{last_item_row})")
+                ws.cell(cat_row, 12, f"=SUM(I{first_item_row}:I{last_item_row})")
+                ws.cell(cat_row, 13, f"=SUM(I{first_item_row}:I{last_item_row})")
+                Ws.cell(cat_row, 14, f"=SUM(I{first_item_row}:I{last_item_row})")
+                ws.cell(cat_row, 15, f"=SUM(I{first_item_row}:I{last_item_row})")
+                ws.cell(cat_row, 16, f"=SUM(I{first_item_row}:I{last_item_row})")
+                ws.cell(cat_row, 17, f"=SUM(I{first_item_row}:I{last_item_row})")
+                ws.cell(cat_row, 19, f"=SUM(I{first_item_row}:I{last_item_row})")
+                for col in (7, 8, 9, 12, 13, 14, 15, 16, 17, 19):
+                    ws.cell(cat_row, col).font          = CATEGORY_FONT
+                    ws.cell(cat_row, col).number_format = '#,##0.00'
+                
+        
             grand_total_rows.append((cat_name, cat_row))#changed
+            
         r += 1
 
     total_row = r + 1
@@ -863,12 +886,20 @@ def write_budget_xlsx(generated) -> bytes:
                                                size=11, bold=True)
     for col in range(1, len(COLUMNS) + 1):
         ws.cell(total_row, col).fill = PatternFill('solid', fgColor='D9D9D9')
-        
-    for col, letter in ((7, 'G'), (8, 'H'), (9, 'I')):
-        rng  = '+'.join(f'{letter}{row_num}' for _, row_num in grand_total_rows) #changed
-        cell = ws.cell(total_row, col, '=' + rng)
-        cell.font           = Font(name='Arial Narrow', size=11, bold=True)
-        cell.number_format  = '#,##0.00'
+
+    if event_type == 'Pop_Up': 
+        for col, letter in ((7, 'G'), (8, 'H'), (9, 'I'), (12, 'L'), (13, 'M'), (14, 'N'), (15, 'O')):
+            rng  = '+'.join(f'{letter}{row_num}' for _, row_num in grand_total_rows) #changed
+            cell = ws.cell(total_row, col, '=' + rng)
+            cell.font           = Font(name='Arial Narrow', size=11, bold=True)
+            cell.number_format  = '#,##0.00'
+    else:
+        for col, letter in ((7, 'G'), (8, 'H'), (9, 'I'), (12, 'L'), (13, 'M'), (14, 'N'), 
+                            (15, 'O'), (16, 'P'), (17, 'Q')):
+            rng  = '+'.join(f'{letter}{row_num}' for _, row_num in grand_total_rows) #changed
+            cell = ws.cell(total_row, col, '=' + rng)
+            cell.font           = Font(name='Arial Narrow', size=11, bold=True)
+            cell.number_format  = '#,##0.00'
 
     error_row = total_row + 2
     l_row = error_row + 3
