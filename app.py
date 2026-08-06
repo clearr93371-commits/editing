@@ -888,7 +888,8 @@ def write_budget_xlsx(generated) -> bytes:
         ws.cell(total_row, col).fill = PatternFill('solid', fgColor='D9D9D9')
 
     if event_type == 'Pop_Up': 
-        for col, letter in ((7, 'G'), (8, 'H'), (9, 'I'), (12, 'L'), (13, 'M'), (14, 'N'), (15, 'O')):
+        for col, letter in ((7, 'G'), (8, 'H'), (9, 'I'), (12, 'L'), (13, 'M'), (14, 'N'), (15, 'O'),
+                           (17, 'Q')):
             rng  = '+'.join(f'{letter}{row_num}' for _, row_num in grand_total_rows) #changed
             cell = ws.cell(total_row, col, '=' + rng)
             cell.font           = Font(name='Arial Narrow', size=11, bold=True)
@@ -901,6 +902,15 @@ def write_budget_xlsx(generated) -> bytes:
             cell.font           = Font(name='Arial Narrow', size=11, bold=True)
             cell.number_format  = '#,##0.00'
 
+
+    #val ttl row - horizontal cal
+    if event_type == 'Pop_Up': 
+        ws.cell(r, 17, f"=SUM(L{r}:O{r})")
+    else: 
+        ws.cell(r, 17, f"=SUM(P{r}:Q{r})")
+    
+    
+    
     error_row = total_row + 2
     l_row = error_row + 3
     ws.cell(error_row, 3, 'MARGEM DE ERRO').font = Font(name='Arial Narrow', size=11, bold=True)
@@ -1095,6 +1105,8 @@ def write_budget_xlsx(generated) -> bytes:
     chart.dataLabels.showVal = False
     chart.dataLabels.dLblPos = "outEnd"
 
+
+    #ADD BARCHART for bill settle 
     # Position the chart right after the summary table (e.g., starting from column F)
     ws.add_chart(chart, f"F{summary_header_row}")
 
