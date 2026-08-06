@@ -855,7 +855,7 @@ def write_budget_xlsx(generated) -> bytes:
                 ws.cell(cat_row, 9, f"=SUM(I{first_item_row}:I{last_item_row})")
                 ws.cell(cat_row, 12, f"=SUM(I{first_item_row}:I{last_item_row})")
                 ws.cell(cat_row, 13, f"=SUM(I{first_item_row}:I{last_item_row})")
-                Ws.cell(cat_row, 14, f"=SUM(I{first_item_row}:I{last_item_row})")
+                ws.cell(cat_row, 14, f"=SUM(I{first_item_row}:I{last_item_row})")
                 ws.cell(cat_row, 15, f"=SUM(I{first_item_row}:I{last_item_row})")
                 ws.cell(cat_row, 17, f"=SUM(I{first_item_row}:I{last_item_row})")
                 for col in (7, 8, 9, 12, 13, 14, 15, 17):
@@ -867,7 +867,7 @@ def write_budget_xlsx(generated) -> bytes:
                 ws.cell(cat_row, 9, f"=SUM(I{first_item_row}:I{last_item_row})")
                 ws.cell(cat_row, 12, f"=SUM(I{first_item_row}:I{last_item_row})")
                 ws.cell(cat_row, 13, f"=SUM(I{first_item_row}:I{last_item_row})")
-                Ws.cell(cat_row, 14, f"=SUM(I{first_item_row}:I{last_item_row})")
+                ws.cell(cat_row, 14, f"=SUM(I{first_item_row}:I{last_item_row})")
                 ws.cell(cat_row, 15, f"=SUM(I{first_item_row}:I{last_item_row})")
                 ws.cell(cat_row, 16, f"=SUM(I{first_item_row}:I{last_item_row})")
                 ws.cell(cat_row, 17, f"=SUM(I{first_item_row}:I{last_item_row})")
