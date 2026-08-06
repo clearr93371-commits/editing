@@ -684,6 +684,13 @@ reduced_13 = {'Food Cost chefs', 'Food Cost bites', 'FOOD COST CHEFS'} #EDIT FOR
 reduced_6 = {'Copos'}
 extra = {'PALCOS INTERNACIONAIS'}
 
+no_tax = {'visita técnica', 'food cost chefs', 'food cost bites', 'operação chouriço', 'chefs lunch', 
+         'chefs dinner', 'alimentação staff - durante evento', 'alimentação staff - montagens e desmontagens',
+          'alimentação staff montagens e desmontagens', 'catering backstage bandas', 
+          'bombeiros', 'psp', 'extintores', 'tpa', '3cket', 'parque de estacionamento',
+          'contentores de lixo', 'hotel', 'alojamento', 'audiogest', 'spa', 'igac', 'licença',
+          'ocupação da via publica', 'trabalho', 'diversos', 'deslocação', 'portagens'}
+
 def write_budget_xlsx(generated) -> bytes:
     """Returns the .xlsx file as bytes so Streamlit can serve it as a download."""
     wb_out = Workbook()
@@ -942,11 +949,15 @@ def write_budget_xlsx(generated) -> bytes:
     for item in generated['line_items']:
         # Determine VAT rate
         vat_rate_factor = 0.23 # Default
-        if item['description'] in reduced_13: vat_rate_factor = 0.13
-        elif item['description'] in reduced_6: vat_rate_factor = 0.06
+        if item['description'] in reduced_6: vat_rate_factor = 0.06
+            ##in reduced_13 --> if needed 
 
         item_total_pretax = item['cost_total_pretax']
         item_total_com_iva = item_total_pretax * (1 + vat_rate_factor)
+
+        #NO TAX items 
+        if item['description'] in any(k in key for k in no_tax): 
+            item_total_com_iva = item_total_pretax
 
         # Apply 'extra' multipliers if applicable (from the budget logic)
         # if item['category'] in extra:
@@ -1184,14 +1195,16 @@ st.success(
 # ── Step 2: describe the new event ───────────────────────────────────────────
 st.markdown("### 2 · Describe the new event")
 
-col_l, col_r = st.columns([2, 3])
+col_r, col_l = st.columns([2, 3])
 with col_l:
     user_text = st.text_area(
         "Plain-language description",
         placeholder='Please enter extra info. (e.g. 11 setembro - 18h00 às 23h00)',
         height=90,
+      
         label_visibility="collapsed",
      )
+    ###inflation part - 
 with col_r:
     st.caption("The details of your event")
     manual_type = st.selectbox(
