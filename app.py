@@ -907,7 +907,7 @@ def write_budget_xlsx(generated) -> bytes:
     if event_type == 'Pop_Up': 
         ws.cell(r, 17, f"=SUM(L{r}:O{r})")
     else: 
-        ws.cell(r, 17, f"=SUM(P{r}:Q{r})")
+        ws.cell(r, 19, f"=SUM(P{r}:Q{r})")
     
     
     
