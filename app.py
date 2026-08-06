@@ -853,11 +853,11 @@ def write_budget_xlsx(generated) -> bytes:
                 ws.cell(cat_row, 7, f"=SUM(G{first_item_row}:G{last_item_row})")
                 ws.cell(cat_row, 8, f"=SUM(H{first_item_row}:H{last_item_row})")
                 ws.cell(cat_row, 9, f"=SUM(I{first_item_row}:I{last_item_row})")
-                ws.cell(cat_row, 12, f"=SUM(I{first_item_row}:I{last_item_row})")
-                ws.cell(cat_row, 13, f"=SUM(I{first_item_row}:I{last_item_row})")
-                ws.cell(cat_row, 14, f"=SUM(I{first_item_row}:I{last_item_row})")
-                ws.cell(cat_row, 15, f"=SUM(I{first_item_row}:I{last_item_row})")
-                ws.cell(cat_row, 17, f"=SUM(I{first_item_row}:I{last_item_row})")
+                ws.cell(cat_row, 12, f"=SUM(L{first_item_row}:L{last_item_row})")
+                ws.cell(cat_row, 13, f"=SUM(M{first_item_row}:M{last_item_row})")
+                ws.cell(cat_row, 14, f"=SUM(N{first_item_row}:N{last_item_row})")
+                ws.cell(cat_row, 15, f"=SUM(O{first_item_row}:O{last_item_row})")
+                ws.cell(cat_row, 17, f"=SUM(Q{first_item_row}:Q{last_item_row})")
                 for col in (7, 8, 9, 12, 13, 14, 15, 17):
                     ws.cell(cat_row, col).font          = CATEGORY_FONT
                     ws.cell(cat_row, col).number_format = '#,##0.00'
@@ -865,13 +865,13 @@ def write_budget_xlsx(generated) -> bytes:
                 ws.cell(cat_row, 7, f"=SUM(G{first_item_row}:G{last_item_row})")
                 ws.cell(cat_row, 8, f"=SUM(H{first_item_row}:H{last_item_row})")
                 ws.cell(cat_row, 9, f"=SUM(I{first_item_row}:I{last_item_row})")
-                ws.cell(cat_row, 12, f"=SUM(I{first_item_row}:I{last_item_row})")
-                ws.cell(cat_row, 13, f"=SUM(I{first_item_row}:I{last_item_row})")
-                ws.cell(cat_row, 14, f"=SUM(I{first_item_row}:I{last_item_row})")
-                ws.cell(cat_row, 15, f"=SUM(I{first_item_row}:I{last_item_row})")
-                ws.cell(cat_row, 16, f"=SUM(I{first_item_row}:I{last_item_row})")
-                ws.cell(cat_row, 17, f"=SUM(I{first_item_row}:I{last_item_row})")
-                ws.cell(cat_row, 19, f"=SUM(I{first_item_row}:I{last_item_row})")
+                ws.cell(cat_row, 12, f"=SUM(L{first_item_row}:L{last_item_row})")
+                ws.cell(cat_row, 13, f"=SUM(M{first_item_row}:M{last_item_row})")
+                ws.cell(cat_row, 14, f"=SUM(N{first_item_row}:N{last_item_row})")
+                ws.cell(cat_row, 15, f"=SUM(O{first_item_row}:O{last_item_row})")
+                ws.cell(cat_row, 16, f"=SUM(P{first_item_row}:P{last_item_row})")
+                ws.cell(cat_row, 17, f"=SUM(Q{first_item_row}:Q{last_item_row})")
+                ws.cell(cat_row, 19, f"=SUM(S{first_item_row}:S{last_item_row})")
                 for col in (7, 8, 9, 12, 13, 14, 15, 16, 17, 19):
                     ws.cell(cat_row, col).font          = CATEGORY_FONT
                     ws.cell(cat_row, col).number_format = '#,##0.00'
@@ -895,7 +895,7 @@ def write_budget_xlsx(generated) -> bytes:
             cell.number_format  = '#,##0.00'
     else:
         for col, letter in ((7, 'G'), (8, 'H'), (9, 'I'), (12, 'L'), (13, 'M'), (14, 'N'), 
-                            (15, 'O'), (16, 'P'), (17, 'Q')):
+                            (15, 'O'), (16, 'P'), (17, 'Q'), (19, 'R'):
             rng  = '+'.join(f'{letter}{row_num}' for _, row_num in grand_total_rows) #changed
             cell = ws.cell(total_row, col, '=' + rng)
             cell.font           = Font(name='Arial Narrow', size=11, bold=True)
