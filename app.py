@@ -808,7 +808,7 @@ def write_budget_xlsx(generated) -> bytes:
             ws.cell(r, 8, f"=G{r}*{vat}")
 
             if item['description'] in any(k in tax_r for k in no_tax):
-                ws.cell(r, 8, 0)
+                ws.cell(r, 8, '')
             
             ws.cell(r, 9, f"=G{r}+H{r}")
             
