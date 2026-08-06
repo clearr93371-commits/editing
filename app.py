@@ -833,6 +833,12 @@ def write_budget_xlsx(generated) -> bytes:
                 vat = '23%'
             ws.cell(r, 8, f"=G{r}*{vat}")
             ws.cell(r, 9, f"=G{r}+H{r}")
+
+            if event_type == 'Pop_Up':
+                ws.cell(r, 17, f"=SUM(L{r}:O{r})")
+            else: 
+                ws.cell(r, 19, f"=SUM(P{r}:Q{r})")
+                
             
             # ws.cell(r, 11, item.get('entity') or '')
             # tag_cell      = ws.cell(r, 12, TAG_LABEL[item['tag']])
@@ -842,8 +848,12 @@ def write_budget_xlsx(generated) -> bytes:
             for col in (1, 2, 3, 10):
                 ws.cell(r, col).font = BASE_FONT
             ws.cell(r, 4).font = TAG_FONT[item['tag']]
-            for col in (4, 7, 8, 9):
-                ws.cell(r, col).number_format = '#,##0.00'
+            if event_type == 'Pop_Up':
+                for col in (4, 7, 8, 9, 17):
+                    ws.cell(r, col).number_format = '#,##0.00'
+            else: 
+                for col in (4, 7, 8, 9, 19):
+                    ws.cell(r, col).number_format = '#,##0.00'
             r += 1
 
         last_item_row = r - 1
@@ -861,7 +871,7 @@ def write_budget_xlsx(generated) -> bytes:
                 for col in (7, 8, 9, 12, 13, 14, 15, 17):
                     ws.cell(cat_row, col).font          = CATEGORY_FONT
                     ws.cell(cat_row, col).number_format = '#,##0.00'
-                ws.cell(r, 17, f"=SUM(L{r}:O{r})")
+                    
                 
             else: 
                 ws.cell(cat_row, 7, f"=SUM(G{first_item_row}:G{last_item_row})")
@@ -877,7 +887,6 @@ def write_budget_xlsx(generated) -> bytes:
                 for col in (7, 8, 9, 12, 13, 14, 15, 16, 17, 19):
                     ws.cell(cat_row, col).font          = CATEGORY_FONT
                     ws.cell(cat_row, col).number_format = '#,##0.00'
-                ws.cell(r, 19, f"=SUM(P{r}:Q{r})")
         
             grand_total_rows.append((cat_name, cat_row))#changed
             
