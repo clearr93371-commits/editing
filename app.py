@@ -861,6 +861,8 @@ def write_budget_xlsx(generated) -> bytes:
                 for col in (7, 8, 9, 12, 13, 14, 15, 17):
                     ws.cell(cat_row, col).font          = CATEGORY_FONT
                     ws.cell(cat_row, col).number_format = '#,##0.00'
+                ws.cell(r, 17, f"=SUM(L{r}:O{r})")
+                
             else: 
                 ws.cell(cat_row, 7, f"=SUM(G{first_item_row}:G{last_item_row})")
                 ws.cell(cat_row, 8, f"=SUM(H{first_item_row}:H{last_item_row})")
@@ -875,7 +877,7 @@ def write_budget_xlsx(generated) -> bytes:
                 for col in (7, 8, 9, 12, 13, 14, 15, 16, 17, 19):
                     ws.cell(cat_row, col).font          = CATEGORY_FONT
                     ws.cell(cat_row, col).number_format = '#,##0.00'
-                
+                ws.cell(r, 19, f"=SUM(P{r}:Q{r})")
         
             grand_total_rows.append((cat_name, cat_row))#changed
             
@@ -901,13 +903,6 @@ def write_budget_xlsx(generated) -> bytes:
             cell = ws.cell(total_row, col, '=' + rng)
             cell.font           = Font(name='Arial Narrow', size=11, bold=True)
             cell.number_format  = '#,##0.00'
-
-
-    #val ttl row - horizontal cal
-    if event_type == 'Pop_Up': 
-        ws.cell(r, 17, f"=SUM(L{r}:O{r})")
-    else: 
-        ws.cell(r, 19, f"=SUM(P{r}:Q{r})")
     
     
     
