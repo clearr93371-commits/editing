@@ -684,12 +684,8 @@ reduced_13 = {'Food Cost chefs', 'Food Cost bites', 'FOOD COST CHEFS'} #EDIT FOR
 reduced_6 = {'Copos'}
 extra = {'PALCOS INTERNACIONAIS'}
 
-no_tax = {'visita técnica', 'food cost chefs', 'food cost bites', 'operação chouriço', 'chefs lunch', 
-         'chefs dinner', 'alimentação staff - durante evento', 'alimentação staff - montagens e desmontagens',
-          'alimentação staff montagens e desmontagens', 'catering backstage bandas', 
-          'bombeiros', 'psp', 'extintores', 'tpa', '3cket', 'parque de estacionamento',
-          'contentores de lixo', 'hotel', 'alojamento', 'audiogest', 'spa', 'igac', 'licença',
-          'ocupação da via publica', 'trabalho', 'diversos', 'deslocação', 'portagens'}
+no_tax = {'Food Cost chefs', 'Food Cost bites 1', 'Food Cost bites 2', 'Food Cost bites 3',
+         'Chefs Lunch', 'Chefs Dinner - Staff'}
 
 def write_budget_xlsx(generated) -> bytes:
     """Returns the .xlsx file as bytes so Streamlit can serve it as a download."""
