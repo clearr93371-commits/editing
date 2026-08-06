@@ -895,7 +895,7 @@ def write_budget_xlsx(generated) -> bytes:
             cell.number_format  = '#,##0.00'
     else:
         for col, letter in ((7, 'G'), (8, 'H'), (9, 'I'), (12, 'L'), (13, 'M'), (14, 'N'), 
-                            (15, 'O'), (16, 'P'), (17, 'Q'), (19, 'R'):
+                            (15, 'O'), (16, 'P'), (17, 'Q'), (19, 'R')):
             rng  = '+'.join(f'{letter}{row_num}' for _, row_num in grand_total_rows) #changed
             cell = ws.cell(total_row, col, '=' + rng)
             cell.font           = Font(name='Arial Narrow', size=11, bold=True)
