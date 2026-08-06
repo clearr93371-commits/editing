@@ -680,12 +680,23 @@ TAG_LABEL = {'DATA_BACKED': '', 'TEMPLATE_ESTIMATE': '', 'NEEDS_INPUT': ''}
 month_cal = ['JAN', 'FEV', 'MARCO','ABRIL', 'MAIO', 'JUNHO', 'JULHO',
 'AGO', 'SET', 'OUT', 'NOV', 'DEZ']
 
-reduced_13 = {'Food Cost chefs', 'Food Cost bites', 'FOOD COST CHEFS'} #EDIT FOR FOOD BITES
+# reduced_13 = {'Food Cost chefs', 'Food Cost bites', 'FOOD COST CHEFS'} #EDIT FOR FOOD BITES
 reduced_6 = {'Copos'}
 extra = {'PALCOS INTERNACIONAIS'}
 
 no_tax = {'Food Cost chefs', 'Food Cost bites 1', 'Food Cost bites 2', 'Food Cost bites 3',
-         'Chefs Lunch', 'Chefs Dinner - Staff'}
+         'Chefs Lunch', 'Chefs Dinner - Staff', 'Alimentação Staff - durante evento', 
+         'Alimentação Staff - montagens e desmontagens', 'Catering Backstage Bandas', 
+         'Bombeiros', 'PSP', 'Extintores', 'Extintores - Quebras', '3cket', 'Devices',
+         'Hotel artistas, chefs', 'Hotel equipa bares e cozinhas', 'Hotel equipa', 
+         'Audiogest', 'SPA', 'IGAC', 'Licença especial de ruido', 'Licença recinto improvisado', 
+         'Responsabilidade Civil, Acidentes Pessoais e de trabalho', 'Acidentes Pessoais e de trabalho',
+         'Diversos', 'VISITA TÉCNICA', 'FOOD COST CHEFS SEXTA', 'FOOD COST CHEFS SÁBADO', 
+         'FOOD COST CHEFS DOMINGO', 'OPERAÇÃO CHOURIÇO', 'PARQUE DE ESTACIONAMENTO', 
+         'CONTENTORES DE LIXO', 'ALOJAMENTO - EQUIPA', 'ALOJAMENTO - CHEFS', 
+          'ALOJAMENTO - BANDAS', 'ALOJAMENTO - CEO + CCO + GROWTH', 'OCUPAÇÃO DA VIA PÚBLICA', 
+          'DESLOCAÇÃO STAFF', 'GASÓLEO E PORTAGENS'}
+          
 
 def write_budget_xlsx(generated) -> bytes:
     """Returns the .xlsx file as bytes so Streamlit can serve it as a download."""
@@ -799,9 +810,9 @@ def write_budget_xlsx(generated) -> bytes:
             ws.cell(r, 6, item['days'] if use_days else None)
             ws.cell(r, 7, f"=E{r}*D{r}*F{r}" if use_days else f"=E{r}*D{r}")
             
-            if item['description'] in reduced_13:
-                vat = '13%' 
-            elif item['description'] in reduced_6: 
+            # if item['description'] in reduced_13:
+            #     vat = '13%' 
+            if item['description'] in reduced_6: 
                 vat = '6%'
             elif item['description'] in no_tax: 
                 vat = '0%'
