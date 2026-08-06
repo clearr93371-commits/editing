@@ -696,6 +696,8 @@ no_tax = {'Food Cost chefs', 'Food Cost bites 1', 'Food Cost bites 2', 'Food Cos
          'CONTENTORES DE LIXO', 'ALOJAMENTO - EQUIPA', 'ALOJAMENTO - CHEFS', 
           'ALOJAMENTO - BANDAS', 'ALOJAMENTO - CEO + CCO + GROWTH', 'OCUPAÇÃO DA VIA PÚBLICA', 
           'DESLOCAÇÃO STAFF', 'GASÓLEO E PORTAGENS'}
+
+no_tax_items = {item.lower(): item for item in no_tax}
           
 
 def write_budget_xlsx(generated) -> bytes:
@@ -814,7 +816,7 @@ def write_budget_xlsx(generated) -> bytes:
             #     vat = '13%' 
             if item['description'] in reduced_6: 
                 vat = '6%'
-            elif item['description'] in no_tax: 
+            elif item['description'] in no_tax_items: 
                 vat = '0%'
             else:
                 vat = '23%'
@@ -973,7 +975,7 @@ def write_budget_xlsx(generated) -> bytes:
         item_total_com_iva = item_total_pretax * (1 + vat_rate_factor)
 
         #might need to add no tax items
-        if item['description'] in no_tax:
+        if item['description'] in no_tax_items:
             item_total_com_iva = item_total_pretax
             
 
