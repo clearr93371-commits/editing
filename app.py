@@ -803,12 +803,15 @@ def write_budget_xlsx(generated) -> bytes:
             ws.cell(r, 6, item['days'] if use_days else None)
             ws.cell(r, 7, f"=E{r}*D{r}*F{r}" if use_days else f"=E{r}*D{r}")
             
-            vat = '13%' if item['description'] in reduced_13 else ('6%' if item['description'] in reduced_6 else '23%')
+            if item['description'] in reduced_13:
+                vat = '13%' 
+            elif item['description'] in reduced_6: 
+                vat = '6%'
+            elif item['description'] in no_tax: 
+                vat = '0'
+            else:
+                vat = '23%'
             ws.cell(r, 8, f"=G{r}*{vat}")
-            ########NO TAX
-            if item['description'] in no_tax:
-                ws.cell(r, 8, '')
-            
             ws.cell(r, 9, f"=G{r}+H{r}")
             
             ws.cell(r, 11, item.get('entity') or '')
