@@ -705,6 +705,7 @@ def write_budget_xlsx(generated) -> bytes:
     ws['G1'].font = Font(name='Arial Narrow', size=12, bold=True)
 
     ws.merge_cells('A2:M2')
+
     event_type = generated['event_type']
 
     
@@ -775,6 +776,8 @@ def write_budget_xlsx(generated) -> bytes:
     r = header_row + 1
     grand_total_rows = []
 
+    tax_r = norm(item['description']) #added for global assess
+
     for cat_name, cat_items in cats.items():
         cat_row = r
         ws.cell(r, 3, cat_name).font = CATEGORY_FONT
@@ -800,8 +803,13 @@ def write_budget_xlsx(generated) -> bytes:
             use_days = item['days'] not in (None, 1)
             ws.cell(r, 6, item['days'] if use_days else None)
             ws.cell(r, 7, f"=E{r}*D{r}*F{r}" if use_days else f"=E{r}*D{r}")
+            
             vat = '13%' if item['description'] in reduced_13 else ('6%' if item['description'] in reduced_6 else '23%')
             ws.cell(r, 8, f"=G{r}*{vat}")
+    
+            if item['description'] in any(k in tax_r for k in no_tax):
+                ws.cell(r, 8, f"=G{r}*0")
+            
             ws.cell(r, 9, f"=G{r}+H{r}")
             
             ws.cell(r, 11, item.get('entity') or '')
@@ -955,9 +963,10 @@ def write_budget_xlsx(generated) -> bytes:
         item_total_pretax = item['cost_total_pretax']
         item_total_com_iva = item_total_pretax * (1 + vat_rate_factor)
 
-        #NO TAX items 
-        if item['description'] in any(k in key for k in no_tax): 
+        #might need to add no tax items
+        if item['description'] in any(k in tax_r for k in no_tax):
             item_total_com_iva = item_total_pretax
+            
 
         # Apply 'extra' multipliers if applicable (from the budget logic)
         # if item['category'] in extra:
