@@ -728,7 +728,7 @@ def write_budget_xlsx(generated) -> bytes:
         meta_txt = (f"Type: {generated['event_type']}  | {generated['slots']} slot(s)  |  "
                 f"{generated['pax_per_slot']:.0f} pax/slot |  "
                 f"{generated['total_pax']:.0f} total pax  |  "
-                f"{generated['month']:.0f}|  "
+                f"{generated['month']} |  "
                 f"Scale tier: {generated['tier']}  |  "
                 f"Base template: {generated['base_template_used']}")
     elif event_type == 'Pop_Up':
@@ -737,14 +737,14 @@ def write_budget_xlsx(generated) -> bytes:
                 f"{generated['slots']} slot(s)  |  "
                 f"{generated['pax_per_slot']:.0f} pax/slot  |  "
                 f"{generated['total_pax']:.0f} total pax  |  "
-                f"{generated['month']:.0f}|  "
+                f"{generated['month']} |  "
                 f"Scale tier: {generated['tier']}  | "
                 f"Base template used: {generated['base_template_used']}")
     else:
         meta_txt = (f"Type: {generated['event_type']}  |  {generated['days']} day(s)  |  "
                 f"{generated['pax_per_day']:.0f} pax/day  | "
                 f"{generated['total_pax']:.0f} total pax  |  "
-                f"{generated['month']:.0f}|  "
+                f"{generated['month']} |  "
                 f"Scale tier: {generated['tier']}  | "
                 f"Base template used: {generated['base_template_used']}")
         
