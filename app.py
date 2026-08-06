@@ -963,7 +963,7 @@ def write_budget_xlsx(generated) -> bytes:
         item_total_com_iva = item_total_pretax * (1 + vat_rate_factor)
 
         #might need to add no tax items
-        if item['description'] in any(k in tax_r for k in no_tax):
+        if item['description'] in no_tax:
             item_total_com_iva = item_total_pretax
             
 
