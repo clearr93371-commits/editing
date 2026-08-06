@@ -821,7 +821,7 @@ def write_budget_xlsx(generated) -> bytes:
                 vat = '6%'
             elif item['description'] in no_tax_items_2: 
                 vat = '0%' if event_type == 'Pop_Up' else '23%'
-            elif item['description'] in no_tax_items_1: 
+            elif item['description'] in no_tax: 
                 vat = '0%' if event_type != 'Pop_Up' else '23%'
             else:
                 vat = '23%'
