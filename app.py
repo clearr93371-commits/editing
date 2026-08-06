@@ -776,7 +776,6 @@ def write_budget_xlsx(generated) -> bytes:
     r = header_row + 1
     grand_total_rows = []
 
-    tax_r = norm(item['description']) #added for global assess
 
     for cat_name, cat_items in cats.items():
         cat_row = r
@@ -806,8 +805,8 @@ def write_budget_xlsx(generated) -> bytes:
             
             vat = '13%' if item['description'] in reduced_13 else ('6%' if item['description'] in reduced_6 else '23%')
             ws.cell(r, 8, f"=G{r}*{vat}")
-
-            if item['description'] in any(k in tax_r for k in no_tax):
+            ########NO TAX
+            if item['description'] in no_tax:
                 ws.cell(r, 8, '')
             
             ws.cell(r, 9, f"=G{r}+H{r}")
