@@ -692,7 +692,8 @@ no_tax = {'Food Cost chefs', 'Food Cost bites 1', 'Food Cost bites 2', 'Food Cos
          'Audiogest', 'SPA', 'IGAC', 'Licença especial de ruido', 'Licença recinto improvisado', 
          'Responsabilidade Civil, Acidentes Pessoais e de trabalho', 'Acidentes Pessoais e de trabalho',
          'Diversos', 'VISITA TÉCNICA', 'FOOD COST CHEFS SEXTA', 'FOOD COST CHEFS SÁBADO', 
-         'FOOD COST CHEFS DOMINGO', 'OPERAÇÃO CHOURIÇO', 'PARQUE DE ESTACIONAMENTO', 
+         'FOOD COST CHEFS DOMINGO', 'OPERAÇÃO CHOURIÇO', 'ALIMENTAÇÃO STAFF EVENTO',
+          'ALIMENTAÇÃO STAFF MONTAGENS E DESMONTAGENS', 'PARQUE DE ESTACIONAMENTO', 
          'CONTENTORES DE LIXO', 'ALOJAMENTO - EQUIPA', 'ALOJAMENTO - CHEFS', 
           'ALOJAMENTO - BANDAS', 'ALOJAMENTO - CEO + CCO + GROWTH', 'OCUPAÇÃO DA VIA PÚBLICA', 
           'DESLOCAÇÃO STAFF', 'GASÓLEO E PORTAGENS'}
