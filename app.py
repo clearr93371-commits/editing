@@ -1140,11 +1140,13 @@ def write_budget_xlsx(generated) -> bytes:
     chart1.varyColors = True
 
     series = chart1.series[0]
-    series.data_points = [DataPoint(idx=i, graphicalProperties=None) for i in range(len(colors))]
+    series.data_points = []
+    for i, c in enumerate(colors):
+        dp = DataPoint(idx=i)
+        dp.graphicalProperties = GraphicalProperties(solidFill=c)
+        series.data_points.append(dp)
     
-    for i, c in enumerate(colors): 
-        series.data_points[i].graphicalProperties.solidFill = c
-        cell = ws.cell(row = total_row, column = start_col + i) 
+        cell = ws.cell(row=total_row, column=start_col + i)
         cell.fill = PatternFill(start_color=c, end_color=c, fill_type="solid")
         
     chart1.y_axis.title = "Cost(€)"
