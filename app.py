@@ -1130,12 +1130,14 @@ def write_budget_xlsx(generated) -> bytes:
     chart1 = BarChart()       
     start_col = 12
     end_col = start_col + num_c - 1 
-    
     for i, c in enumerate(colors): 
         if i < len(chart1.series):
             chart1.series[i].graphicalProperties.solidFill = c
-        cell = ws.cell(row = total_row, column = start_col + i) 
-        cell.fill = PatternFill(start_color=c, end_color=c, fill_type="solid")
+    # for i, c in enumerate(colors): 
+    #     if i < len(chart1.series):
+    #         chart1.series[i].graphicalProperties.solidFill = c
+    #     cell = ws.cell(row = total_row, column = start_col + i) 
+    #     cell.fill = PatternFill(start_color=c, end_color=c, fill_type="solid")
         
     
     
