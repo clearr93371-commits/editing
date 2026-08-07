@@ -21,6 +21,7 @@ from openpyxl.chart.label import DataLabelList
 from openpyxl.chart.legend import Legend
 from openpyxl.chart.text import RichText
 from openpyxl.drawing.text import Paragraph, ParagraphProperties, CharacterProperties
+from openpyxl.chart.marker import DataPoint
 from openpyxl.utils.dataframe import dataframe_to_rows
 from datetime import datetime
 from openpyxl.worksheet.datavalidation import DataValidation
@@ -1121,6 +1122,11 @@ def write_budget_xlsx(generated) -> bytes:
     chart1.height = 8
     chart1.width = 14
     chart1_start_row = total_row + 2
+
+    chart1.add_data(data, from_rows = True) 
+    chart1.varyColors = True
+
+    series = chart1.series[0]
     
     if event_type == 'Pop_Up': 
         colors = ["4A86E8", "FF9900", "6AA84F", "F1C232"]
@@ -1131,16 +1137,18 @@ def write_budget_xlsx(generated) -> bytes:
         colors = ["4A86E8", "00B0F0", "9BC2E6", "FF9900", "6AA84F", "F1C232"]
         num_c = 6
         data = Reference(ws, min_col = 12, min_row = total_row, max_col = 17, max_row = total_row)
-
-    chart1 = BarChart()       
+  
     start_col = 12
     end_col = start_col + num_c - 1 
-
+    
     chart1.add_data(data, from_rows = True) 
+    chart1.varyColors = True
+
+    series = chart1.series[0]
+    series.data_points = [DataPoint(idx=i, graphicalProperties=None) for i in range(len(colors))]
     
     for i, c in enumerate(colors): 
-        if i < len(chart1.series):
-            chart1.series[i].graphicalProperties.solidFill = c
+        series.data_points[i].graphicalProperties.solidFill = c
         cell = ws.cell(row = total_row, column = start_col + i) 
         cell.fill = PatternFill(start_color=c, end_color=c, fill_type="solid")
         
