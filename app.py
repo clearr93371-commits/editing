@@ -861,11 +861,10 @@ def write_budget_xlsx(generated) -> bytes:
         last_item_row = r - 1
         
         if last_item_row >= first_item_row:
-            if cat_name in extra: 
-                v = 3 else 1
-                ws.cell(cat_row, 7, f'=SUM(G{first_item_row}:G{last_item_row})*{v}')
-                ws.cell(cat_row, 8, f'=SUM(H{first_item_row}:H{last_item_row})*{v}')
-                ws.cell(cat_row, 9, f'=SUM(I{first_item_row}:I{last_item_row})*{v}')
+            v = 3 if cat_name in extra else 1
+            ws.cell(cat_row, 7, f'=SUM(G{first_item_row}:G{last_item_row})*{v}')
+            ws.cell(cat_row, 8, f'=SUM(H{first_item_row}:H{last_item_row})*{v}')
+            ws.cell(cat_row, 9, f'=SUM(I{first_item_row}:I{last_item_row})*{v}')
             if event_type == 'Pop_Up':
                 ws.cell(cat_row, 7, f"=SUM(G{first_item_row}:G{last_item_row})")
                 ws.cell(cat_row, 8, f"=SUM(H{first_item_row}:H{last_item_row})")
