@@ -245,9 +245,11 @@ Security = {'segurança'}
 Equipa = {'equipa montagens média/fina'}
 Outros = {'aluguer de viaturas'}
 Lenha = {'lenha'}
+# inf_items = {'food cost chefs', 'FOOD COST CHEFS', 'food cost bites 1', 'food cost bites 2',
+#              'food cost bites 3'}
 
 
-def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, event_name,
+def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, event_name, inf_rate,
                     extra_notes, templates, validated_ratios, event_meta):
                         
     if event_type == 'fine_dining':
@@ -318,7 +320,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 qty_to_use = food_portion_per_day
                 days_to_use = days
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+                cost_total_pretax_to_use = numeric_it_unit_cost * (1 + inf_rate) * qty_to_use * days_to_use
 
             elif any(k in key for k in Food_Cost_bites_1) or any(k in key for k in Food_Cost_bites_2) or any(k in key for k in Food_Cost_bites_3):
                 food_bites_portion = 2 * pax_per_day
@@ -329,21 +331,21 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                     qty_to_use = 600 * no_chef_a
                     days_to_use = days
                     tag_to_use = 'DATA_BACKED'
-                    cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use 
+                    cost_total_pretax_to_use = numeric_it_unit_cost * (1 + inf_rate) * qty_to_use * days_to_use 
 
                 elif any(k in key for k in Food_Cost_bites_2):
                     no_chef_b = round(no_of_restaurant_per_day / 18 * 4)
                     qty_to_use = 600 * no_chef_b
                     days_to_use = days
                     tag_to_use = 'DATA_BACKED'
-                    cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use 
+                    cost_total_pretax_to_use = numeric_it_unit_cost * (1 + inf_rate) * qty_to_use * days_to_use
 
                 elif any(k in key for k in Food_Cost_bites_3):
                     no_chef_c = round(no_of_restaurant_per_day / 18 * 5)
                     qty_to_use = 600 * no_chef_c
                     days_to_use = days
                     tag_to_use = 'DATA_BACKED'
-                    cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use # Apply after qty, days are determined
+                    cost_total_pretax_to_use = numeric_it_unit_cost * (1 + inf_rate) * qty_to_use * days_to_use # Apply after qty, days are determined
 
             elif key in Staff:
                 cost_staff_1 = 22500 * (1.3 ** (days - 1))
@@ -384,7 +386,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 qty_to_use = food_portion
                 days_to_use = days
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+                cost_total_pretax_to_use = numeric_it_unit_cost * (1 + inf_rate) * qty_to_use * days_to_use
 
             elif any(k in key for k in Catering_event):  
                 if days > 1: 
@@ -406,7 +408,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
               qty_to_use = food_portion
               days_to_use = days
               tag_to_use = 'DATA_BACKED'
-              cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+              cost_total_pretax_to_use = numeric_it_unit_cost * (1 + inf_rate) * qty_to_use * days_to_use
 
             elif key in Staff: 
                 if days > 1: 
@@ -454,7 +456,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 qty_to_use = total_pax_fd
                 days_to_use = 1 # Total pax, not per day
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+                cost_total_pretax_to_use = numeric_it_unit_cost * (1 + inf_rate) * qty_to_use * days_to_use
                 
             elif any(k in key for k in Sommelier):
                 qty_to_use = slots
@@ -493,7 +495,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 qty_to_use = pax_per_slot * slots * 4
                 days_to_use = 1
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
+                cost_total_pretax_to_use = numeric_it_unit_cost * (1 + inf_rate) * qty_to_use * days_to_use
                 if any(k in key for k in Sexta_Chef):
                     qty_to_use = 0 
                     cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
@@ -630,6 +632,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
         'slots':              slots,
         'total_pax':          total_pax_fd,
         'month':              month,
+        'inflation_rate':     inf_rate,
         'tier':               tier_fd,
         'notes':              extra_notes,
         'line_items':         generated,
@@ -645,6 +648,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
         'slots':              slots,
         'total_pax':          total_pax_pu,
         'month':              month,
+        'inflation_rate':     inf_rate,
         'tier':               tier_pu,
         'notes':              extra_notes,
         'line_items':         generated,
@@ -660,6 +664,7 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
         'slots':              slots,
         'total_pax':          total_pax,
         'month':              month,
+        'inflation_rate':     inf_rate,
         'tier':               tier,
         'notes':              extra_notes,
         'line_items':         generated,
@@ -1188,11 +1193,13 @@ def extract_params(text):
     pax_s = int(pm_s.group(1).replace(',','').replace('.','')) if pm_s else None
     date_match = re.search(r'on\s+[[[\[\d\s\-.]*(\w+)', text_lower)
     month = date_match.group(1).upper() if date_match else 'JUNHO'
+    inf_m = re.search(r'(\d+)\s*-?\s*rate', tl)
+    inf = int(inf_m.group(1).replace(',','').replace('.','')) if inf_m else None
     nm = re.search(r'(?:called|named|titled)\s*["\']?([\w\s\-]+)["\']?',
                    text, re.IGNORECASE)
     name = nm.group(1).strip() if nm else 'New Event'
     return {'event_type': event_type, 'days': days,
-            'pax_per_day': pax, 'slots': slots, 'pax_per_slot': pax_s, 'month': month, 'event_name': name}
+            'pax_per_day': pax, 'slots': slots, 'pax_per_slot': pax_s, 'month': month, 'inflation_rate': inf, event_name': name}
 
 # ═════════════════════════════════════════════════════════════════════════════
 #  STREAMLIT UI
@@ -1327,7 +1334,7 @@ with col_l:
         height=90,
         label_visibility="collapsed",
      )
-    ###inflation part - 
+    manual_inflation = st.number_input("inflation rate", min_value=0, value=0.5)
 
 with col_r:
     st.caption("The details of your event")
@@ -1368,6 +1375,7 @@ if st.button("🔥 Generate budget"):
             'slots': manual_slots, 
             'pax_per_slot': manual_pax_slot, 
             'month': manual_month,
+            'inflation_rate': manual_inflation, 
             'event_name':  manual_name, }
         
 
@@ -1389,6 +1397,7 @@ if st.button("🔥 Generate budget"):
                 pax_per_slot = params['pax_per_slot'],
                 slots = params['slots'],
                 month = params['month'], 
+                inf_rate = params['inflation_rate'],
                 event_name       = params['event_name'],
                 extra_notes      = user_text,
                 templates        = templates,
