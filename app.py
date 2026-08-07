@@ -1120,7 +1120,7 @@ def write_budget_xlsx(generated) -> bytes:
     chart1.height = 8
     chart1.width = 14
 
-    data = ReferenceIws, min_col = 12, min_row = total_row, max_col = 15, max_row = total_row) 
+    data = Reference(ws, min_col = 12, min_row = total_row, max_col = 15, max_row = total_row) 
     chart1.add_data(data, from_rows = True) 
     
     chart1.y_axis.number_format = '"€"#,,##0.00' 
