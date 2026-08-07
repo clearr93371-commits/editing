@@ -1126,9 +1126,11 @@ def write_budget_xlsx(generated) -> bytes:
     end_col = start_col + num_c - 1 
     r_idx = total_row
 
-    for  i, c in enumerate(colors):
+    for i, c in enumerate(colors):
         cell = ws.cell(row = r_idx, column = start_col + i) 
-        cell.fill = PatternFill(start_color=c, end_color=c, fill_type="solid")
+        cell.fill = PatternFill(start_color=c, end_color=c, fill_type="solid")\
+        if i < len(chart1.series): 
+            chart1.series[i].graphicalProperties.solidFill = c
         
     data = Reference(ws, min_col = 12, min_row = total_row, max_col = 15, max_row = total_row) 
     
@@ -1140,12 +1142,6 @@ def write_budget_xlsx(generated) -> bytes:
     chart1.width = 14
     chart1.y_axis.title = "Cost(€)"
     chart1.add_data(data, from_rows = True) 
-    
-    
-    
-    for  i, c in enumerate(colors): 
-        if i < len(chart1.series): 
-            chart1.series[i].graphicalProperties.solidFill = c
         
     
     chart1.y_axis.number_format = '"€"#,,##0.00' 
