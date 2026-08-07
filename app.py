@@ -904,7 +904,8 @@ def write_budget_xlsx(generated) -> bytes:
             rng  = '+'.join(f'{letter}{row_num}' for _, row_num in grand_total_rows) #changed
             cell = ws.cell(total_row, col, '=' + rng)
             cell.font           = Font(name='Arial Narrow', size=11, bold=True)
-            cell.number_format  = '#,##0.00'
+            cell.number_format  = '#,##0.00' 
+            
     else:
         for col, letter in ((7, 'G'), (8, 'H'), (9, 'I'), (12, 'L'), (13, 'M'), (14, 'N'), 
                             (15, 'O'), (16, 'P'), (17, 'Q'), (19, 'R')):
@@ -1120,6 +1121,22 @@ def write_budget_xlsx(generated) -> bytes:
     chart1.height = 8
     chart1.width = 14
 
+    if event_type == 'Pop-Up': 
+        colors = ["4A86E8", "FF9900", "6AA84F", "F1C232Z"]
+    else: 
+        colors = ["4A86E8", "00B0F0", "9BC2E6", "FF9900", "6AA84F", "F1C232Z"]
+        
+    if i, c in enumerate(colors): 
+        if i < len(chart1.series): 
+            chart1.series[i].graphicalProperties.solidFill = c
+            
+    sr = 12
+    r_idx = total_row
+
+    for i, c in enumerate(colors): 
+        cell = ws.cell(row = r_idx, column = sr + i) 
+        cell.fill = PatternFill(start_color=c, end_color=c, fill_type="solid")
+
     data = Reference(ws, min_col = 12, min_row = total_row, max_col = 15, max_row = total_row) 
     chart1.add_data(data, from_rows = True) 
     
@@ -1288,16 +1305,16 @@ st.success(
 # ── Step 2: describe the new event ───────────────────────────────────────────
 st.markdown("### 2 · Describe the new event")
 
-col_r, col_l = st.columns([2, 3])
+col_r, col_l = st.columns([3, 2])
 with col_l:
     user_text = st.text_area(
         "Plain-language description",
         placeholder='Please enter extra info. (e.g. 11 setembro - 18h00 às 23h00)',
         height=90,
-      
         label_visibility="collapsed",
      )
     ###inflation part - 
+
 with col_r:
     st.caption("The details of your event")
     manual_type = st.selectbox(
