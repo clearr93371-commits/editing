@@ -1137,7 +1137,7 @@ def write_budget_xlsx(generated) -> bytes:
 
     chart1.add_data(data, from_rows = True) 
 
-     for i, c in enumerate(colors): 
+    for i, c in enumerate(colors): 
         cell = ws.cell(row = total_row, column = start_col + i) 
         cell.fill = PatternFill(start_color=c, end_color=c, fill_type="solid")
         if i < len(chart1.series):
