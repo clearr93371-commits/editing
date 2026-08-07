@@ -22,6 +22,7 @@ from openpyxl.chart.legend import Legend
 from openpyxl.chart.text import RichText
 from openpyxl.drawing.text import Paragraph, ParagraphProperties, CharacterProperties
 from openpyxl.chart.marker import DataPoint
+from openpyxl.chart.shapes import GraphicalProperties
 from openpyxl.utils.dataframe import dataframe_to_rows
 from datetime import datetime
 from openpyxl.worksheet.datavalidation import DataValidation
