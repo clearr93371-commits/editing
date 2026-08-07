@@ -1134,7 +1134,7 @@ def write_budget_xlsx(generated) -> bytes:
     chart1.y_axis.title = "Cost(€)"
     chart1.height = 8
     chart1.width = 14
-    chart.type = "col"
+    # chart.type = "col"
     chart1.add_data(data, from_rows = True) 
     
     
