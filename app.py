@@ -1115,7 +1115,7 @@ def write_budget_xlsx(generated) -> bytes:
 
     
     #ADD BARCHART for bill settle 
-    if event_type == 'Pop-Up': 
+    if event_type == 'Pop_Up': 
         colors = ["4A86E8", "FF9900", "6AA84F", "F1C232"]
         num_c = 4
     else: 
