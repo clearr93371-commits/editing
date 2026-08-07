@@ -1199,7 +1199,7 @@ def extract_params(text):
                    text, re.IGNORECASE)
     name = nm.group(1).strip() if nm else 'New Event'
     return {'event_type': event_type, 'days': days,
-            'pax_per_day': pax, 'slots': slots, 'pax_per_slot': pax_s, 'month': month, 'inflation_rate': inf, event_name': name}
+            'pax_per_day': pax, 'slots': slots, 'pax_per_slot': pax_s, 'month': month, 'inflation_rate': inf, 'event_name': name}
 
 # ═════════════════════════════════════════════════════════════════════════════
 #  STREAMLIT UI
