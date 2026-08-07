@@ -866,10 +866,7 @@ def write_budget_xlsx(generated) -> bytes:
         last_item_row = r - 1
         
         if last_item_row >= first_item_row:
-            v = 3 if cat_name in extra else 1
-            ws.cell(cat_row, 7, f'=SUM(G{first_item_row}:G{last_item_row})*{v}')
-            ws.cell(cat_row, 8, f'=SUM(H{first_item_row}:H{last_item_row})*{v}')
-            ws.cell(cat_row, 9, f'=SUM(I{first_item_row}:I{last_item_row})*{v}')
+            
             if event_type == 'Pop_Up':
                 ws.cell(cat_row, 7, f"=SUM(G{first_item_row}:G{last_item_row})")
                 ws.cell(cat_row, 8, f"=SUM(H{first_item_row}:H{last_item_row})")
@@ -898,7 +895,12 @@ def write_budget_xlsx(generated) -> bytes:
                 for col in (7, 8, 9, 12, 13, 14, 15, 16, 17, 19):
                     ws.cell(cat_row, col).font          = CATEGORY_FONT
                     ws.cell(cat_row, col).number_format = '#,##0.00'
-        
+                    
+            v = 3 if cat_name in extra else 1
+            ws.cell(cat_row, 7, f'=SUM(G{first_item_row}:G{last_item_row})*{v}')
+            ws.cell(cat_row, 8, f'=SUM(H{first_item_row}:H{last_item_row})*{v}')
+            ws.cell(cat_row, 9, f'=SUM(I{first_item_row}:I{last_item_row})*{v}')
+            
             grand_total_rows.append((cat_name, cat_row))#changed
             
         r += 1
