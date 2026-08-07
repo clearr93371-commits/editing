@@ -1121,6 +1121,7 @@ def write_budget_xlsx(generated) -> bytes:
         colors = ["4A86E8", "FF9900", "6AA84F", "F1C232"]
         num_c = 4
         data = Reference(ws, min_col = 12, min_row = total_row, max_col = 15, max_row = total_row)
+    
     else: 
         colors = ["4A86E8", "00B0F0", "9BC2E6", "FF9900", "6AA84F", "F1C232"]
         num_c = 6
@@ -1129,13 +1130,12 @@ def write_budget_xlsx(generated) -> bytes:
     for i, c in enumerate(colors): 
         if i < len(chart1.series):
             chart1.series[i].graphicalProperties.solidFill = c
+        cell = ws.cell(row = total_row, column = start_col + i) 
+        cell.fill = PatternFill(start_color=c, end_color=c, fill_type="solid")
+        
             
     start_col = 12
     end_col = start_col + num_c - 1 
-    for i, c in enumerate(colors): 
-        cell = ws.cell(row = total_row, column = start_col + i) 
-        cell.fill = PatternFill(start_color=c, end_color=c, fill_type="solid")
-    
     
     chart1.type = "col"
     chart1.height = 8
