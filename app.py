@@ -1115,6 +1115,8 @@ def write_budget_xlsx(generated) -> bytes:
 
     
     #ADD BARCHART for bill settle 
+    chart1 = BarChart()
+    
     if event_type == 'Pop_Up': 
         colors = ["4A86E8", "FF9900", "6AA84F", "F1C232"]
         num_c = 4
@@ -1134,7 +1136,7 @@ def write_budget_xlsx(generated) -> bytes:
         cell = ws.cell(row = total_row, column = start_col + i) 
         cell.fill = PatternFill(start_color=c, end_color=c, fill_type="solid")
     
-    chart1 = BarChart()
+    
     chart1.type = "col"
     chart1.height = 8
     chart1.width = 14
