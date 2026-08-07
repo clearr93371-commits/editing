@@ -1147,7 +1147,10 @@ def write_budget_xlsx(generated) -> bytes:
 
     chart1_start_row = total_row + 2
     ws.add_chart(chart1, f"L{chart1_start_row}")
-    
+
+    legend = chart1.legend
+    legend.position = "right"
+    legend.font = Font(size=10)
 
     ws.freeze_panes = 'A5'
     buf = io.BytesIO()
