@@ -1115,17 +1115,21 @@ def write_budget_xlsx(generated) -> bytes:
 
     
     #ADD BARCHART for bill settle 
+    if event_type == 'Pop-Up': 
+        colors = ["4A86E8", "FF9900", "6AA84F", "F1C232"]
+        num_c = 4
+    else: 
+        colors = ["4A86E8", "00B0F0", "9BC2E6", "FF9900", "6AA84F", "F1C232"]
+        num_c = 6
+
+    start_col = 12
+    end_col = start_col + num_c - 1 
     chart1_start_row = total_row + 2
     chart1 = BarChart()
     chart1.y_axis.title = "Cost(€)"
     chart1.height = 8
     chart1.width = 14
-
-    if event_type == 'Pop-Up': 
-        colors = ["4A86E8", "FF9900", "6AA84F", "F1C232Z"]
-    else: 
-        colors = ["4A86E8", "00B0F0", "9BC2E6", "FF9900", "6AA84F", "F1C232Z"]
-    sr = 12
+    
     r_idx = total_row
     
     if i, c in enumerate(colors): 
