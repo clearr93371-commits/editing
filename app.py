@@ -1124,16 +1124,8 @@ def write_budget_xlsx(generated) -> bytes:
 
     start_col = 12
     end_col = start_col + num_c - 1 
-    r_idx = total_row
-
-    for i, c in enumerate(colors): 
-        cell = ws.cell(row = r_idx, column = start_col + i) 
-        cell.fill = PatternFill(start_color=c, end_color=c, fill_type="solid")
         
     data = Reference(ws, min_col = 12, min_row = total_row, max_col = 15, max_row = total_row)
-    categories = Reference(ws, min_col=start_col, min_row=total_row - 1, 
-                           max_col=end_col, max_row=total_row - 1,
-                          )
     
     chart1 = BarChart()
     chart1.type = "col"
@@ -1144,15 +1136,12 @@ def write_budget_xlsx(generated) -> bytes:
     chart1.y_axis.majorGridlines = None
 
     chart1.add_data(data, from_rows = True) 
-    chart1.set_categories(categories)
 
-    for i, c in enumerate(colors):
+     for i, c in enumerate(colors): 
+        cell = ws.cell(row = total_row, column = start_col + i) 
+        cell.fill = PatternFill(start_color=c, end_color=c, fill_type="solid")
         if i < len(chart1.series):
-            # Changes both bar fill and legend icon color
             chart1.series[i].graphicalProperties.solidFill = c
-            header_text = ws.cell(row=total_row - 1, column=start_col + i).value
-            if header_text:
-                chart1.series[i].title = str(header_text)
 
     chart1_start_row = total_row + 2
     ws.add_chart(chart1, f"L{chart1_start_row}")
