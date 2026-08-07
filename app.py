@@ -1108,11 +1108,26 @@ def write_budget_xlsx(generated) -> bytes:
     chart.dataLabels.showLegendKey = False
     chart.dataLabels.showVal = False
     chart.dataLabels.dLblPos = "outEnd"
-
-
-    #ADD BARCHART for bill settle 
+   
     # Position the chart right after the summary table (e.g., starting from column F)
     ws.add_chart(chart, f"F{summary_header_row}")
+
+    
+    #ADD BARCHART for bill settle 
+    chart1_start_row = total_row + 2
+    chart1 = BarChart()
+    chart1.y_axis.title = Cost(€)
+    chart1.height = 8
+    chart1.width = 14
+
+    data = ReferenceIws, min_col = 12, min_row = total_row, max_col = 15, max_row = total_row) 
+    chart1.add_data(data, from_rows = True) 
+    
+    chart1.y_axis.number_format = '"€"#,,##0.00' 
+    chart1.y_axis.majorGridlines = None
+
+    ws.add_chart(chart1, f"L{chart1_start_row}")
+    
 
     ws.freeze_panes = 'A5'
     buf = io.BytesIO()
