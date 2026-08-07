@@ -1124,6 +1124,10 @@ def write_budget_xlsx(generated) -> bytes:
         num_c = 6
         data = Reference(ws, min_col = 12, min_row = total_row, max_col = 17, max_row = total_row)
 
+    for i, c in enumerate(colors): 
+        if i < len(chart1.series):
+            chart1.series[i].graphicalProperties.solidFill = c
+            
     start_col = 12
     end_col = start_col + num_c - 1 
     for i, c in enumerate(colors): 
@@ -1140,17 +1144,8 @@ def write_budget_xlsx(generated) -> bytes:
 
     chart1.add_data(data, from_rows = True) 
 
-        
-    for i, c in enumerate(colors): 
-        if i < len(chart1.series):
-            chart1.series[i].graphicalProperties.solidFill = c
-
     chart1_start_row = total_row + 2
     ws.add_chart(chart1, f"L{chart1_start_row}")
-
-    legend = chart1.legend
-    legend.position = "right"
-    legend.font = Font(size=10)
 
     ws.freeze_panes = 'A5'
     buf = io.BytesIO()
