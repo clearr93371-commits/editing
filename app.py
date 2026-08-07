@@ -1116,7 +1116,7 @@ def write_budget_xlsx(generated) -> bytes:
     #ADD BARCHART for bill settle 
     chart1_start_row = total_row + 2
     chart1 = BarChart()
-    chart1.y_axis.title = Cost(€)
+    chart1.y_axis.title = "Cost(€)"
     chart1.height = 8
     chart1.width = 14
 
