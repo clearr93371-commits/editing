@@ -1118,14 +1118,17 @@ def write_budget_xlsx(generated) -> bytes:
     if event_type == 'Pop_Up': 
         colors = ["4A86E8", "FF9900", "6AA84F", "F1C232"]
         num_c = 4
+        data = Reference(ws, min_col = 12, min_row = total_row, max_col = 15, max_row = total_row)
     else: 
         colors = ["4A86E8", "00B0F0", "9BC2E6", "FF9900", "6AA84F", "F1C232"]
         num_c = 6
+        data = Reference(ws, min_col = 12, min_row = total_row, max_col = 17, max_row = total_row)
 
     start_col = 12
     end_col = start_col + num_c - 1 
-        
-    data = Reference(ws, min_col = 12, min_row = total_row, max_col = 15, max_row = total_row)
+    for i, c in enumerate(colors): 
+        cell = ws.cell(row = total_row, column = start_col + i) 
+        cell.fill = PatternFill(start_color=c, end_color=c, fill_type="solid")
     
     chart1 = BarChart()
     chart1.type = "col"
@@ -1137,9 +1140,6 @@ def write_budget_xlsx(generated) -> bytes:
 
     chart1.add_data(data, from_rows = True) 
 
-    for i, c in enumerate(colors): 
-        cell = ws.cell(row = total_row, column = start_col + i) 
-        cell.fill = PatternFill(start_color=c, end_color=c, fill_type="solid")
         
     for i, c in enumerate(colors): 
         if i < len(chart1.series):
