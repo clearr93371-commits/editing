@@ -1334,7 +1334,6 @@ with col_l:
         height=90,
         label_visibility="collapsed",
      )
-    manual_inflation = st.number_input("inflation rate", min_value=0, value=0.5)
 
 with col_r:
     st.caption("The details of your event")
@@ -1346,7 +1345,7 @@ with col_r:
     manual_pax_slot = st.number_input("Pax per slot(🔴 Skip if not applicable)", min_value=1, value=700)
     manual_month = st.selectbox ("Date of the event", options=month_cal, index=0)
     manual_name = st.text_input("Event name", value="New Event 2027")
-    manual_inflation = st.number_input("inflation rate", min_value=0, value=0.5)
+    manual_inflation = st.number_input("Inflation Rate: (5% - Please enter 0.5)", min_value=0, value=0.5)
 
     if manual_type == 'Pop-Up': 
         event_type = 'Pop_Up'
