@@ -1150,6 +1150,9 @@ def write_budget_xlsx(generated) -> bytes:
         if i < len(chart1.series):
             # Changes both bar fill and legend icon color
             chart1.series[i].graphicalProperties.solidFill = c
+            header_text = ws.cell(row=total_row - 1, column=start_col + i).value
+            if header_text:
+                chart1.series[i].title = str(header_text)
 
     chart1_start_row = total_row + 2
     ws.add_chart(chart1, f"L{chart1_start_row}")
