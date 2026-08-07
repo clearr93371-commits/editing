@@ -1116,6 +1116,11 @@ def write_budget_xlsx(generated) -> bytes:
     
     #ADD BARCHART for bill settle 
     chart1 = BarChart()
+    chart1.type = "col"
+    chart1.style == 10
+    chart1.height = 8
+    chart1.width = 14
+    chart1_start_row = total_row + 2
     
     if event_type == 'Pop_Up': 
         colors = ["4A86E8", "FF9900", "6AA84F", "F1C232"]
@@ -1130,27 +1135,19 @@ def write_budget_xlsx(generated) -> bytes:
     chart1 = BarChart()       
     start_col = 12
     end_col = start_col + num_c - 1 
+
+    chart1.add_data(data, from_rows = True) 
+    
     for i, c in enumerate(colors): 
         if i < len(chart1.series):
             chart1.series[i].graphicalProperties.solidFill = c
-    # for i, c in enumerate(colors): 
-    #     if i < len(chart1.series):
-    #         chart1.series[i].graphicalProperties.solidFill = c
-    #     cell = ws.cell(row = total_row, column = start_col + i) 
-    #     cell.fill = PatternFill(start_color=c, end_color=c, fill_type="solid")
+        cell = ws.cell(row = total_row, column = start_col + i) 
+        cell.fill = PatternFill(start_color=c, end_color=c, fill_type="solid")
         
-    
-    
-    chart1.type = "col"
-    chart1.height = 8
-    chart1.width = 14
     chart1.y_axis.title = "Cost(€)"
     chart1.y_axis.number_format = '"€"#,,##0.00' 
     chart1.y_axis.majorGridlines = None
 
-    chart1.add_data(data, from_rows = True) 
-
-    chart1_start_row = total_row + 2
     ws.add_chart(chart1, f"L{chart1_start_row}")
 
     ws.freeze_panes = 'A5'
