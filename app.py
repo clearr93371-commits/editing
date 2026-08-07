@@ -317,10 +317,11 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
                 cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
 
             elif any(k in key for k in Food_Cost_chefs):
+                unit_cost_to_use = numeric_it_unit_cost * (1 + inf_rate) 
                 qty_to_use = food_portion_per_day
                 days_to_use = days
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = numeric_it_unit_cost * (1 + inf_rate) * qty_to_use * days_to_use
+                cost_total_pretax_to_use = unit_cost_to_use * qty_to_use * days_to_use
 
             elif any(k in key for k in Food_Cost_bites_1) or any(k in key for k in Food_Cost_bites_2) or any(k in key for k in Food_Cost_bites_3):
                 food_bites_portion = 2 * pax_per_day
@@ -328,24 +329,27 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
 
                 if any(k in key for k in Food_Cost_bites_1):
                     no_chef_a = round(no_of_restaurant_per_day / 18 * 9)
+                    unit_cost_to_use = numeric_it_unit_cost * (1 + inf_rate) 
                     qty_to_use = 600 * no_chef_a
                     days_to_use = days
                     tag_to_use = 'DATA_BACKED'
-                    cost_total_pretax_to_use = numeric_it_unit_cost * (1 + inf_rate) * qty_to_use * days_to_use 
+                    cost_total_pretax_to_use = unit_cost_to_use * qty_to_use * days_to_use
 
                 elif any(k in key for k in Food_Cost_bites_2):
                     no_chef_b = round(no_of_restaurant_per_day / 18 * 4)
+                    unit_cost_to_use = numeric_it_unit_cost * (1 + inf_rate) 
                     qty_to_use = 600 * no_chef_b
                     days_to_use = days
                     tag_to_use = 'DATA_BACKED'
-                    cost_total_pretax_to_use = numeric_it_unit_cost * (1 + inf_rate) * qty_to_use * days_to_use
+                    cost_total_pretax_to_use = unit_cost_to_use * qty_to_use * days_to_use
 
                 elif any(k in key for k in Food_Cost_bites_3):
                     no_chef_c = round(no_of_restaurant_per_day / 18 * 5)
+                    unit_cost_to_use = numeric_it_unit_cost * (1 + inf_rate) 
                     qty_to_use = 600 * no_chef_c
                     days_to_use = days
                     tag_to_use = 'DATA_BACKED'
-                    cost_total_pretax_to_use = numeric_it_unit_cost * (1 + inf_rate) * qty_to_use * days_to_use # Apply after qty, days are determined
+                    cost_total_pretax_to_use = unit_cost_to_use * qty_to_use * days_to_use # Apply after qty, days are determined
 
             elif key in Staff:
                 cost_staff_1 = 22500 * (1.3 ** (days - 1))
@@ -383,10 +387,11 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
             food_portion = 4 * pax_per_day
             numeric_it_unit_cost = to_num(it['unit_cost'], 0)
             if any(k in key for k in Food_Cost_chefs):
+                unit_cost_to_use = numeric_it_unit_cost * (1 + inf_rate) 
                 qty_to_use = food_portion
                 days_to_use = days
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = numeric_it_unit_cost * (1 + inf_rate) * qty_to_use * days_to_use
+                cost_total_pretax_to_use = unit_cost_to_use * qty_to_use * days_to_use
 
             elif any(k in key for k in Catering_event):  
                 if days > 1: 
@@ -399,16 +404,17 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
             food_portion = 9 * pax_per_day
             numeric_it_unit_cost = to_num(it['unit_cost'], 0)
             if any(k in key for k in Fee_CHEFS):
-              qty_to_use = 10
-              days_to_use = days
-              tag_to_use = 'DATA_BACKED'
-              cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
-
+                qty_to_use = 10
+                days_to_use = days
+                tag_to_use = 'DATA_BACKED'
+                cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use * days_to_use
+                
             elif any(k in key for k in Food_Cost_chefs):
-              qty_to_use = food_portion
-              days_to_use = days
-              tag_to_use = 'DATA_BACKED'
-              cost_total_pretax_to_use = numeric_it_unit_cost * (1 + inf_rate) * qty_to_use * days_to_use
+                unit_cost_to_use = numeric_it_unit_cost * (1 + inf_rate) 
+                qty_to_use = food_portion
+                days_to_use = days
+                tag_to_use = 'DATA_BACKED'
+                cost_total_pretax_to_use = unit_cost_to_use * qty_to_use * days_to_use
 
             elif key in Staff: 
                 if days > 1: 
@@ -452,11 +458,10 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
 
             elif any(k in key for k in Food_Cost_chefs):
                 unit_cost_to_use = 80
-                numeric_it_unit_cost = unit_cost_to_use
                 qty_to_use = total_pax_fd
                 days_to_use = 1 # Total pax, not per day
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = numeric_it_unit_cost * (1 + inf_rate) * qty_to_use * days_to_use
+                cost_total_pretax_to_use = unit_cost_to_use * (1 + inf_rate) * qty_to_use * days_to_use
                 
             elif any(k in key for k in Sommelier):
                 qty_to_use = slots
@@ -492,10 +497,11 @@ def generate_budget(event_type, pax_per_day, days, pax_per_slot, slots, month, e
             band_fee_est = 3500
             cost_staff = 8000 * (1.1 ** ( days - 1 ))
             if any (k in key for k in Food_Cost_chefs):
+                unit_cost_to_use = numeric_it_unit_cost * (1 + inf_rate) 
                 qty_to_use = pax_per_slot * slots * 4
                 days_to_use = 1
                 tag_to_use = 'DATA_BACKED'
-                cost_total_pretax_to_use = numeric_it_unit_cost * (1 + inf_rate) * qty_to_use * days_to_use
+                cost_total_pretax_to_use = unit_cost_to_use * qty_to_use * days_to_use
                 if any(k in key for k in Sexta_Chef):
                     qty_to_use = 0 
                     cost_total_pretax_to_use = numeric_it_unit_cost * qty_to_use
